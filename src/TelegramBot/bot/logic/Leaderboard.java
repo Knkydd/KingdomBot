@@ -10,7 +10,7 @@ public class Leaderboard {
         int i = 1;
         while (leaderboardIterator.hasNext()) {
             String next = leaderboardIterator.next();
-            String m = i + "     "+ next + "       " + leaderboard.get(next);
+            String m = i + "     "+ next + "       " + leaderboard.get(next) + "\n";
             message = message + m;
             i++;
         }
