@@ -31,10 +31,8 @@ public class Commands {
         commandsMap.put(ConstantKB.MAIN_MENU, mainMenuControl::setMainMenuInMSG);
 
         //Обработка начального меню
-        commandsMap.put(ConstantKB.CALLBACK_START_BUTTON, (chatID, messageID) -> //startGame
-                mainMenuControl.mainMenuHandler(chatID, ConstantKB.CALLBACK_START_BUTTON, messageID));
-        commandsMap.put(ConstantKB.CALLBACK_CONTINUE_BUTTON, (chatID, messageID) ->
-                mainMenuControl.mainMenuHandler(chatID, ConstantKB.CALLBACK_CONTINUE_BUTTON, messageID));
+        commandsMap.put(ConstantKB.CALLBACK_PLAY_BUTTON, (chatID, messageID) -> //startGame
+                mainMenuControl.mainMenuHandler(chatID, ConstantKB.CALLBACK_PLAY_BUTTON, messageID));
         commandsMap.put(ConstantKB.CALLBACK_LEADERBOARD_BUTTON, (chatID, messageID) ->
                 mainMenuControl.mainMenuHandler(chatID, ConstantKB.CALLBACK_LEADERBOARD_BUTTON, messageID));
 

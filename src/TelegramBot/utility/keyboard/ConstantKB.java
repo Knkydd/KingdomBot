@@ -1,8 +1,7 @@
 package TelegramBot.utility.keyboard;
 
 public class ConstantKB {
-    public final static String START_BUTTON = "Начать игру";
-    public final static String CONTINUE_BUTTON = "Продолжить";
+    public final static String PLAY_BUTTON = "Играть";
     public final static String LEADERBOARD_BUTTON = "Таблица лидеров";
 
     public final static String NEXT_MOVE_BUTTON = "Следующий ход";
@@ -22,8 +21,7 @@ public class ConstantKB {
 
     public final static String MAIN_MENU = "mainMenu";
 
-    public final static String CALLBACK_START_BUTTON = "startGame";
-    public final static String CALLBACK_CONTINUE_BUTTON = "continueGame";
+    public final static String CALLBACK_PLAY_BUTTON = "playGame";
     public final static String CALLBACK_LEADERBOARD_BUTTON = "leaderboard";
 
     public final static String CALLBACK_NEXT_MOVE_BUTTON = "nextMove";

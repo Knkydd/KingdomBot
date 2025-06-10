@@ -6,7 +6,6 @@ import TelegramBot.utility.ConstantMessages;
 import TelegramBot.utility.EditMessage;
 import TelegramBot.utility.MessageSender;
 import TelegramBot.utility.keyboard.ConstantKB;
-import TelegramBot.utility.keyboard.Keyboard;
 
 public class MainMenu {
     private final DatabaseTools databaseTools;
@@ -36,17 +35,10 @@ public class MainMenu {
                 userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
                 break;
 
-            case ConstantKB.CALLBACK_START_BUTTON:
+            case ConstantKB.CALLBACK_PLAY_BUTTON:
 
                 messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, ConstantMessages.GAME_MESSAGE + Resources.resourceMessage(databaseTools.getResources(chatID))));
-                userStateRepository.setState(chatID, ConstantKB.CALLBACK_START_BUTTON);
-
-                break;
-
-            case ConstantKB.CALLBACK_CONTINUE_BUTTON:
-
-                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, ConstantMessages.GAME_MESSAGE + Resources.resourceMessage(databaseTools.getResources(chatID))));
-                userStateRepository.setState(chatID, ConstantKB.CALLBACK_CONTINUE_BUTTON);
+                userStateRepository.setState(chatID, ConstantKB.CALLBACK_PLAY_BUTTON);
 
                 break;
 

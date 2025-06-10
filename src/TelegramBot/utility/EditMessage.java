@@ -20,8 +20,7 @@ public class EditMessage {
                 messageEdited.setReplyMarkup(keyboard.startKeyboard());
                 break;
 
-            case ConstantKB.CALLBACK_START_BUTTON:
-            case ConstantKB.CALLBACK_CONTINUE_BUTTON:
+            case ConstantKB.CALLBACK_PLAY_BUTTON:
                 messageEdited.setText(text);
                 messageEdited.setReplyMarkup(keyboard.gameKeyboard());
                 break;
