@@ -184,7 +184,7 @@ public class Builds {
 
                 } else {
 
-                    messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.BUILD_FAILED_RESOURCES));
+                    messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.UPGRADE_BUILD_FAILED_RESOURCES));
 
                 }
             } else {

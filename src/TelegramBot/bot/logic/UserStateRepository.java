@@ -23,15 +23,14 @@ public class UserStateRepository {
         List<String> states = userStates.get(chatID);
         String result = "";
         if(!states.isEmpty()) {
-            states.removeLast();
+            states.remove(states.size());
         }
         if(states.isEmpty()){
             result = "mainMenu";
         } else {
-            result = states.getLast();
-            states.removeLast();
+            result = states.get(states.size());
+            states.remove(states.size());
         }
-        System.out.println(userStates);
         return result;
     }
 }

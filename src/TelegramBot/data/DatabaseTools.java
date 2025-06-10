@@ -11,16 +11,17 @@ public class DatabaseTools extends Config {
     }
 
     public void registrationUser(long chatID, String username) {
-        String insertRegistration = String.format("BEGIN;" +
-                        "INSERT INTO %s(%s, %s) VALUES(%s, '%s');" +
-                        "INSERT INTO %s(%s) VALUES(%s);" +
-                        "INSERT INTO %s(%s) VALUES(%s);" +
-                        "INSERT INTO %s(%s) VALUES(%s);" +
-                        "COMMIT;",
-                ConstantDB.TABLE_USERS, ConstantDB.USER_ID, ConstantDB.USER_NAME, chatID, username,
-                ConstantDB.TABLE_ARMY, ConstantDB.USER_ID, chatID,
-                ConstantDB.TABLE_RESOURCES, ConstantDB.USER_ID, chatID,
-                ConstantDB.TABLE_BUILDS, ConstantDB.USER_ID, chatID);
+        String insertRegistration = "BEGIN;" +
+                "INSERT INTO " + ConstantDB.TABLE_USERS + "(" +
+                ConstantDB.USER_ID + ", " + ConstantDB.USER_NAME +
+                ") VALUES(" + chatID + ", '" + username + "');" +
+                "INSERT INTO " + ConstantDB.TABLE_ARMY + "(" +
+                ConstantDB.USER_ID + ") VALUES(" + chatID + ");" +
+                "INSERT INTO " + ConstantDB.TABLE_RESOURCES + "(" +
+                ConstantDB.USER_ID + ") VALUES(" + chatID + ");" +
+                "INSERT INTO " + ConstantDB.TABLE_BUILDS + "(" +
+                ConstantDB.USER_ID + ") VALUES(" + chatID + ");" +
+                "COMMIT;";
         try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(insertRegistration);
         } catch (SQLException e) {
@@ -45,7 +46,7 @@ public class DatabaseTools extends Config {
     public Map<String, Integer> getResources(long chatID) {
         Map<String, Integer> resources = new HashMap<>();
         ResultSet resultSet = null;
-        String getterResources = String.format("SELECT * FROM %S WHERE %s=%s", ConstantDB.TABLE_RESOURCES, ConstantDB.USER_ID, chatID);
+        String getterResources = "SELECT * FROM " + ConstantDB.TABLE_RESOURCES + " WHERE " + ConstantDB.USER_ID + "=" + chatID;
         try (Statement statement = dbConnection.createStatement()) {
             resultSet = statement.executeQuery(getterResources);
             while (resultSet.next()) {
@@ -61,9 +62,13 @@ public class DatabaseTools extends Config {
     }
 
     public void setResources(long chatID, Map<String, Integer> resources) {
-        String insertResources = String.format("UPDATE %s SET %s=%s, %s=%s, %s=%s, %s=%s WHERE %s=%s",
-                ConstantDB.TABLE_RESOURCES, ConstantDB.USER_GOLD, resources.get("Gold"), ConstantDB.USER_WOOD, resources.get("Wood"),
-                ConstantDB.USER_FOOD, resources.get("Food"), ConstantDB.USER_STONE, resources.get("Stone"), ConstantDB.USER_ID, chatID);
+        String insertResources = "UPDATE " + ConstantDB.TABLE_RESOURCES +
+                " SET " +
+                ConstantDB.USER_GOLD + "=" + resources.get("Gold") + ", " +
+                ConstantDB.USER_WOOD + "=" + resources.get("Wood") + ", " +
+                ConstantDB.USER_FOOD + "=" + resources.get("Food") + ", " +
+                ConstantDB.USER_STONE + "=" + resources.get("Stone") +
+                " WHERE " + ConstantDB.USER_ID + "=" + chatID;
         try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(insertResources);
         } catch (SQLException e) {
@@ -73,7 +78,11 @@ public class DatabaseTools extends Config {
 
     public Map<String, Integer> getLeaderboard() {
         ResultSet resultSet = null;
-        String getterUsername = String.format("SELECT * FROM %s ORDER BY %s DESC", ConstantDB.TABLE_USERS, ConstantDB.USER_ARMY_POWER);
+        String getterUsername = "SELECT * FROM " +
+                ConstantDB.TABLE_USERS +
+                " ORDER BY " +
+                ConstantDB.USER_ARMY_POWER +
+                " DESC";
         int i = 0;
         Map<String, Integer> leaderboard = new LinkedHashMap<>();
         try (Statement statement = dbConnection.createStatement()) {
@@ -90,7 +99,12 @@ public class DatabaseTools extends Config {
     public Map<String, Integer> getArmy(long chatID) {
         Map<String, Integer> army = new HashMap<>();
         ResultSet resultSet = null;
-        String getterArmy = String.format("SELECT * FROM %s WHERE %s=%s", ConstantDB.TABLE_ARMY, ConstantDB.USER_ID, chatID);
+        String getterArmy = "SELECT * FROM " +
+                ConstantDB.TABLE_ARMY +
+                " WHERE " +
+                ConstantDB.USER_ID +
+                "=" +
+                chatID;
         try (Statement statement = dbConnection.createStatement()) {
             resultSet = statement.executeQuery(getterArmy);
             while (resultSet.next()) {
@@ -107,9 +121,14 @@ public class DatabaseTools extends Config {
     }
 
     public void setArmy(long chatID, Map<String, Integer> army) {
-        String insertArmy = String.format("UPDATE %s SET %s=%s, %s=%s, %s=%s, %s=%s, %s=%s WHERE %s=%s",
-                ConstantDB.TABLE_ARMY, ConstantDB.USER_WARRIOR_UNIT, army.get("warriorUnit"), ConstantDB.USER_MAGE_UNIT, army.get("mageUnit"),
-                ConstantDB.USER_ARCHER_UNIT, army.get("archerUnit"), ConstantDB.USER_PALADIN_UNIT, army.get("paladinUnit"), ConstantDB.USER_HEALER_UNIT, army.get("healerUnit"), ConstantDB.USER_ID, chatID);
+        String insertArmy = "UPDATE " + ConstantDB.TABLE_ARMY +
+                " SET " +
+                ConstantDB.USER_WARRIOR_UNIT + "=" + army.get("warriorUnit") + ", " +
+                ConstantDB.USER_MAGE_UNIT + "=" + army.get("mageUnit") + ", " +
+                ConstantDB.USER_ARCHER_UNIT + "=" + army.get("archerUnit") + ", " +
+                ConstantDB.USER_PALADIN_UNIT + "=" + army.get("paladinUnit") + ", " +
+                ConstantDB.USER_HEALER_UNIT + "=" + army.get("healerUnit") +
+                " WHERE " + ConstantDB.USER_ID + "=" + chatID;
         try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(insertArmy);
         } catch (SQLException e) {
@@ -118,7 +137,16 @@ public class DatabaseTools extends Config {
     }
 
     public void setArmyPower(long chatID, Integer armyPower) {
-        String insertArmyPower = String.format("UPDATE %s SET %s=%s WHERE %s=%s", ConstantDB.TABLE_USERS, ConstantDB.USER_ARMY_POWER, armyPower, ConstantDB.USER_ID, chatID);
+        String insertArmyPower = "UPDATE " +
+                ConstantDB.TABLE_USERS +
+                " SET " +
+                ConstantDB.USER_ARMY_POWER +
+                "=" +
+                armyPower +
+                " WHERE " +
+                ConstantDB.USER_ID +
+                "=" +
+                chatID;
         try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(insertArmyPower);
         } catch (SQLException e) {
@@ -129,7 +157,14 @@ public class DatabaseTools extends Config {
     public Integer getCurrentAttackLevel(long chatID) {
         Integer currentAttackLevel = 1;
         ResultSet resultSet = null;
-        String getterAttackLevel = String.format("SELECT %s FROM %s WHERE %s=%s", ConstantDB.USER_LEVEL_ATTACK, ConstantDB.TABLE_ARMY, ConstantDB.USER_ID, chatID);
+        String getterAttackLevel = "SELECT " +
+                ConstantDB.USER_LEVEL_ATTACK +
+                " FROM " +
+                ConstantDB.TABLE_ARMY +
+                " WHERE " +
+                ConstantDB.USER_ID +
+                "=" +
+                chatID;
         try (Statement statement = dbConnection.createStatement()) {
             resultSet = statement.executeQuery(getterAttackLevel);
             while (resultSet.next()) {
@@ -142,7 +177,16 @@ public class DatabaseTools extends Config {
     }
 
     public void setCurrentLevelAttack(long chatID, Integer currentLevel) {
-        String insertLevelAttack = String.format("UPDATE %s set %s=%s WHERE %s=%s", ConstantDB.TABLE_ARMY, ConstantDB.USER_LEVEL_ATTACK, currentLevel, ConstantDB.USER_ID, chatID);
+        String insertLevelAttack = "UPDATE " +
+                ConstantDB.TABLE_ARMY +
+                " SET " +
+                ConstantDB.USER_LEVEL_ATTACK +
+                "=" +
+                currentLevel +
+                " WHERE " +
+                ConstantDB.USER_ID +
+                "=" +
+                chatID;
         try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(insertLevelAttack);
         } catch (SQLException e) {
@@ -153,7 +197,14 @@ public class DatabaseTools extends Config {
     public Integer getArmyPower(long chatID) {
         Integer armyPower = 0;
         ResultSet resultSet = null;
-        String getterArmyPower = String.format("SELECT %s FROM %s WHERE %s=%s", ConstantDB.USER_ARMY_POWER, ConstantDB.TABLE_USERS, ConstantDB.USER_ID, chatID);
+        String getterArmyPower = "SELECT " +
+                ConstantDB.USER_ARMY_POWER +
+                " FROM " +
+                ConstantDB.TABLE_USERS +
+                " WHERE " +
+                ConstantDB.USER_ID +
+                "=" +
+                chatID;
         try (Statement statement = dbConnection.createStatement()) {
             resultSet = statement.executeQuery(getterArmyPower);
             if (resultSet.next()) {
@@ -168,7 +219,12 @@ public class DatabaseTools extends Config {
     public Map<String, Integer> getBuilds(long chatID) {
         Map<String, Integer> builds = new HashMap<>();
         ResultSet resultSet = null;
-        String getterBuilds = String.format("SELECT * FROM %s WHERE %s=%s", ConstantDB.TABLE_BUILDS, ConstantDB.USER_ID, chatID);
+        String getterBuilds = "SELECT * FROM " +
+                ConstantDB.TABLE_BUILDS +
+                " WHERE " +
+                ConstantDB.USER_ID +
+                "=" +
+                chatID;
         try (Statement statement = dbConnection.createStatement()) {
             resultSet = statement.executeQuery(getterBuilds);
             while (resultSet.next()) {
@@ -190,13 +246,22 @@ public class DatabaseTools extends Config {
     }
 
     public void setBuilds(long chatID, Map<String, Integer> builds) {
-        String insertBuilds = String.format("UPDATE %s SET %s=%s, %s=%s, %s=%s, %s=%s, %s=%s, %s=%s, %s=%s, %s=%s, %s=%s, %s=%s WHERE %s=%s",
-                ConstantDB.TABLE_BUILDS, ConstantDB.USER_QUARRY, builds.get(ConstantDB.USER_QUARRY), ConstantDB.USER_TOWN_HALL, builds.get(ConstantDB.USER_TOWN_HALL),
-                ConstantDB.USER_FARM, builds.get(ConstantDB.USER_FARM), ConstantDB.USER_SAWMILL, builds.get(ConstantDB.USER_SAWMILL),
-                ConstantDB.USER_TRADE_BUILD, builds.get(ConstantDB.USER_TRADE_BUILD), ConstantDB.USER_BARRACKS, builds.get(ConstantDB.USER_BARRACKS),
-                ConstantDB.USER_MAGE_TOWER, builds.get(ConstantDB.USER_MAGE_TOWER), ConstantDB.USER_SHOOTING_RANGE, builds.get(ConstantDB.USER_SHOOTING_RANGE),
-                ConstantDB.USER_CHAPEL_OF_LAST_HOPE, builds.get(ConstantDB.USER_CHAPEL_OF_LAST_HOPE), ConstantDB.USER_CHURCH, builds.get(ConstantDB.USER_CHURCH),
-                ConstantDB.USER_ID, chatID);
+        String insertBuilds = "UPDATE " +
+                ConstantDB.TABLE_BUILDS +
+                " SET " +
+                ConstantDB.USER_QUARRY + "=" + builds.get(ConstantDB.USER_QUARRY) + ", " +
+                ConstantDB.USER_TOWN_HALL + "=" + builds.get(ConstantDB.USER_TOWN_HALL) + ", " +
+                ConstantDB.USER_FARM + "=" + builds.get(ConstantDB.USER_FARM) + ", " +
+                ConstantDB.USER_SAWMILL + "=" + builds.get(ConstantDB.USER_SAWMILL) + ", " +
+                ConstantDB.USER_TRADE_BUILD + "=" + builds.get(ConstantDB.USER_TRADE_BUILD) + ", " +
+                ConstantDB.USER_BARRACKS + "=" + builds.get(ConstantDB.USER_BARRACKS) + ", " +
+                ConstantDB.USER_MAGE_TOWER + "=" + builds.get(ConstantDB.USER_MAGE_TOWER) + ", " +
+                ConstantDB.USER_SHOOTING_RANGE + "=" + builds.get(ConstantDB.USER_SHOOTING_RANGE) + ", " +
+                ConstantDB.USER_CHAPEL_OF_LAST_HOPE + "=" + builds.get(ConstantDB.USER_CHAPEL_OF_LAST_HOPE) + ", " +
+                ConstantDB.USER_CHURCH + "=" + builds.get(ConstantDB.USER_CHURCH) +
+                " WHERE " +
+                ConstantDB.USER_ID + "=" + chatID;
+
         try (Statement statement = dbConnection.createStatement()) {
             statement.executeUpdate(insertBuilds);
         } catch (SQLException e) {
