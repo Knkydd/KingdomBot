@@ -1,25 +1,18 @@
 package TelegramBot.bot;
 
 import TelegramBot.bot.logic.*;
-import TelegramBot.data.DatabaseConnection;
-import TelegramBot.utility.*;
 import TelegramBot.utility.keyboard.ConstantKB;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 public class BotController {
-    private final MessageSender messageSender;
-    private final BotUtils botUtils;
-    private final DatabaseConnection dbConnection;
     private final UserStateRepository userStateRepository;
     private final Commands commands;
 
     public BotController(TelegramLongPollingBot bot) {
-        messageSender = new MessageSender(bot);
-        botUtils = new BotUtils(messageSender);
-        dbConnection = botUtils.getDbConnection();
+        BotUtils botUtils = BotUtils.getInstance(bot);
         userStateRepository = botUtils.getUserStateRepository();
-        commands = new Commands(botUtils);
+        commands = botUtils.getCommands();
     }
 
     public void updateReceived(Update update) {

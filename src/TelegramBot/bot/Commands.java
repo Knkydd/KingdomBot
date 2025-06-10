@@ -2,9 +2,7 @@ package TelegramBot.bot;
 
 import TelegramBot.bot.logic.*;
 import TelegramBot.data.ConstantDB;
-import TelegramBot.data.DatabaseTools;
 import TelegramBot.utility.ConstantBuildUp;
-import TelegramBot.utility.MessageSender;
 import TelegramBot.utility.keyboard.ConstantKB;
 
 import java.util.HashMap;
@@ -12,9 +10,6 @@ import java.util.Map;
 
 public class Commands {
     private Map<String, TriConsumer<Long, Integer, String>> commandsMap;
-    private DatabaseTools databaseTools;
-    private UserStateRepository userStateRepository;
-    private MessageSender messageSender;
     private NextMove nextMoveControl;
     private MainMenu mainMenuControl;
     private GameMenu gameMenuControl;
@@ -24,9 +19,6 @@ public class Commands {
 
     public Commands(BotUtils botUtils) {
         commandsMap = new HashMap<>();
-        databaseTools = botUtils.getDatabaseTools();
-        userStateRepository = botUtils.getUserStateRepository();
-        messageSender = botUtils.getMessageSender();
         nextMoveControl = new NextMove(botUtils);
         mainMenuControl = new MainMenu(botUtils);
         gameMenuControl = new GameMenu(botUtils);
