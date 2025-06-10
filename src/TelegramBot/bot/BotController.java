@@ -45,7 +45,6 @@ public class BotController {
         if (text.equalsIgnoreCase("/start")) {
             TriConsumer<Long, Integer, String> command = commands.getCommand("/start");
             command.accept(chatID, 0, "");
-
         }
     }
 

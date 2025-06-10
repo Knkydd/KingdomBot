@@ -24,9 +24,9 @@ public class AttackMenu {
         String message = "";
         String tempMessage = "";
         if (!currentLevel.equals(11)) {
-            tempMessage = String.format("Уровень:   %s\n\n" +
-                    "Для того, чтобы атаковать, вам нужно %s мощи армии\n\n" +
-                    "На данный момент мощь вашей армии составляет: %s\n", currentLevel, ConstantAttackMenu.ATTACK_LEVELS.get(currentLevel), armyPower);
+            tempMessage = "Уровень:   " + currentLevel + "\n\n" +
+                    "Для того, чтобы атаковать, вам нужно " + ConstantAttackMenu.ATTACK_LEVELS.get(currentLevel) + " мощи армии\n\n" +
+                    "На данный момент мощь вашей армии составляет: " + armyPower + "\n";
         } else {
             tempMessage = ConstantMessages.FINAL_BATTLE_MESSAGE;
         }
@@ -37,8 +37,13 @@ public class AttackMenu {
     public String rewardsMessage(Integer currentLevel) {
         String message = "";
         Map<String, Integer> rewards = ConstantReward.REWARD_FOR_VICTORY_ATTACK.get(currentLevel);
-        String tempMessage = String.format("В награду за победу вы получаете %s дерева, %s золота, %s камня и %s еды\n" +
-                "Они будут добавлены к вам на склад", rewards.get("Wood"), rewards.get("Gold"), rewards.get("Stone"), rewards.get("Food"));
+
+        String tempMessage = "В награду за победу вы получаете " +
+                rewards.get("Wood") + " дерева, " +
+                rewards.get("Gold") + " золота, " +
+                rewards.get("Stone") + " камня и " +
+                rewards.get("Food") + " еды\n" +
+                "Они будут добавлены к вам на склад";
         message += tempMessage;
         return message;
     }

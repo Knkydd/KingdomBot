@@ -18,7 +18,7 @@ public class DatabaseConnection extends Config {
     }
 
     private Connection getDbConnection() throws ClassNotFoundException, SQLException {
-        String connection = String.format("jdbc:postgresql://%s:%s/%s", dbHost, dbPort, dbName);
+        String connection = "jdbc:postgresql://" + dbHost + ":" + dbPort + "/" + dbName;
         Class.forName("org.postgresql.Driver");
         dbConnection = DriverManager.getConnection(connection, dbUser, dbPassword);
         return dbConnection;

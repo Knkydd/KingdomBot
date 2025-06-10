@@ -37,21 +37,22 @@ public class Army {
     }
 
     public static String armyMessage(Map<String, Integer> army, Integer armyPower) {
-        String message = ConstantMessages.ARMY_MESSAGE;
+        StringBuilder message = new StringBuilder(ConstantMessages.ARMY_MESSAGE);
         String tempMessage = "";
         Set<String> armyKeys = army.keySet();
         Iterator iteratorArmyKeys = armyKeys.iterator();
         Integer i = 1;
         while (iteratorArmyKeys.hasNext()) {
             String temp = (String) iteratorArmyKeys.next();
-            tempMessage = String.format("%s        %s         Юнитов: %s\n", i, ConstantDB.accordanceListOfArmy.get(temp), army.get(temp));
-            message += tempMessage;
+            tempMessage = i + "          " + ConstantDB.accordanceListOfArmy.get(temp) +
+                    "         Юнитов: " + army.get(temp) + "\n";
+            message.append(tempMessage);
             i++;
         }
-        message += "\n";
-        tempMessage = String.format("Мощь вашей армии составляет:   %s", armyPower);
-        message += tempMessage;
-        return message;
+        message.append("\n");
+        tempMessage = "Мощь вашей армии составляет:   " + armyPower;
+        message.append(tempMessage);
+        return message.toString();
     }
 
     public static Map<String, Integer> recruitingArmy(Map<String, Integer> army, String unit) {
@@ -72,7 +73,7 @@ public class Army {
             i++;
         }
         message += "\n";
-        tempMessage = String.format("Ваше золото:     %s", Gold);
+        tempMessage = "Ваше золото:       " + Gold;
         message += tempMessage;
         return message;
     }
