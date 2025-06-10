@@ -40,6 +40,7 @@ public class BotController {
         String text = update.getMessage().getText();
         String username = update.getMessage().getFrom().getUserName();
         if (text.equalsIgnoreCase("/start")) {
+
             if(!botUtils.getDatabaseTools().isRegistered(chatID)){
                 botUtils.getDatabaseTools().registrationUser(chatID, username);
             }
@@ -61,6 +62,7 @@ public class BotController {
             callbackData = userStateRepository.getState(chatID);
         }
         try {
+            userStateRepository.gt();
             BiConsumer<Long, Integer> command = commands.getCommand(callbackData);
             command.accept(chatID, messageID);
         } catch (Exception e) {

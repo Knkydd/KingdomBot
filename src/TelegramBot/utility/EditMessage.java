@@ -14,6 +14,7 @@ public class EditMessage {
         EditMessageText messageEdited = new EditMessageText();
         messageEdited.setMessageId(messageID);
         messageEdited.setChatId(chatID);
+        System.out.println(callbackData);
         switch (callbackData) {
             case ConstantKB.MAIN_MENU:
                 messageEdited.setText(text);
