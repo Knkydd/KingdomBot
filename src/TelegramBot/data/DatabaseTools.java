@@ -10,11 +10,11 @@ public class DatabaseTools extends Config {
         this.dbConnection = dbConnection;
     }
 
-    public void registrationUser(long chatID, String username) {
+    public void registrationUser(long chatID) {
         String insertRegistration = "BEGIN;" +
                 "INSERT INTO " + ConstantDB.TABLE_USERS + "(" +
                 ConstantDB.USER_ID + ", " + ConstantDB.USER_NAME +
-                ") VALUES(" + chatID + ", '" + username + "');" +
+                ") VALUES(" + chatID + "');" +
                 "INSERT INTO " + ConstantDB.TABLE_ARMY + "(" +
                 ConstantDB.USER_ID + ") VALUES(" + chatID + ");" +
                 "INSERT INTO " + ConstantDB.TABLE_RESOURCES + "(" +

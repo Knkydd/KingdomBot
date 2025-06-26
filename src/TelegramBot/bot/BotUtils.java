@@ -28,8 +28,12 @@ public class BotUtils {
     }
 
     public static BotUtils getInstance(TelegramLongPollingBot bot) {
-        if (instance == null)
-            instance = new BotUtils(bot);
+        if (instance == null) {
+            synchronized (BotUtils.class) {
+                if (instance == null)
+                    instance = new BotUtils(bot);
+            }
+        }
         return instance;
     }
 

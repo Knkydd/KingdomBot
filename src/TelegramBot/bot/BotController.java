@@ -8,12 +8,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.function.BiConsumer;
 
 public class BotController {
-    private final BotUtils botUtils;
     private final UserStateRepository userStateRepository;
     private final Commands commands;
 
     public BotController(TelegramLongPollingBot bot) {
-        this.botUtils = BotUtils.getInstance(bot);
+        BotUtils botUtils = BotUtils.getInstance(bot);
         userStateRepository = botUtils.getUserStateRepository();
         commands = botUtils.getCommands();
     }
@@ -38,19 +37,9 @@ public class BotController {
     private void handleCommands(Update update) {
         long chatID = update.getMessage().getChatId();
         String text = update.getMessage().getText();
-        String username = update.getMessage().getFrom().getUserName();
         if (text.equalsIgnoreCase("/start")) {
-
-            if(!botUtils.getDatabaseTools().isRegistered(chatID)){
-                botUtils.getDatabaseTools().registrationUser(chatID, username);
-            }
-            if (userStateRepository.isEmpty()) {
-                userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
-            } else {
-                userStateRepository.removeAll(chatID);
-                userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
-            }
-            botUtils.getMessageSender().send(chatID, botUtils.getKeyboard().startKeyboardMessage(chatID));
+            BiConsumer<Long, Integer> command = commands.getCommand("/start");
+            command.accept(chatID, 0);
         }
     }
 

@@ -1,9 +1,10 @@
 package TelegramBot.bot.logic;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserStateRepository {
-    private final static Map<Long, List<String>> userStates = new HashMap<>();
+    private final static Map<Long, List<String>> userStates = new ConcurrentHashMap<>();
 
     public boolean isEmpty(){
         if(userStates.isEmpty())

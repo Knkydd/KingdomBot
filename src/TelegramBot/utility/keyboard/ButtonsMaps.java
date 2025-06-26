@@ -21,7 +21,6 @@ public class ButtonsMaps {
     static {
         //Кнопки для главного меню
         startButtons.put(ConstantKB.PLAY_BUTTON, ConstantKB.CALLBACK_PLAY_BUTTON);
-        startButtons.put(ConstantKB.LEADERBOARD_BUTTON, ConstantKB.CALLBACK_LEADERBOARD_BUTTON);
 
         //Кнопки для игрового меню
         gameButtons.put(ConstantKB.BUILDS_BUTTON, ConstantKB.CALLBACK_BUILDS_BUTTON);

@@ -31,11 +31,6 @@ public class EditMessage {
                 messageEdited.setReplyMarkup(keyboard.actionKeyboard());
                 break;
 
-            case ConstantKB.CALLBACK_LEADERBOARD_BUTTON:
-                messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.leaderboardKeyboard());
-                break;
-
             case ConstantKB.CALLBACK_BUILDS_BUTTON:
                 messageEdited.setText(text);
                 messageEdited.setReplyMarkup(keyboard.buildsKeyboard());

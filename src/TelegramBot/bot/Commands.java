@@ -27,14 +27,15 @@ public class Commands {
         buildsMenuControl = new Builds(botUtils);
         attackMenuControl = new AttackMenu(botUtils);
 
+        commandsMap.put("/start", (chatID, zero) ->
+                mainMenuControl.mainMenuStart(chatID));
+
         //Начальный вызов начального меню
         commandsMap.put(ConstantKB.MAIN_MENU, mainMenuControl::setMainMenuInMSG);
 
         //Обработка начального меню
         commandsMap.put(ConstantKB.CALLBACK_PLAY_BUTTON, (chatID, messageID) ->
                 mainMenuControl.mainMenuHandler(chatID, ConstantKB.CALLBACK_PLAY_BUTTON, messageID));
-        commandsMap.put(ConstantKB.CALLBACK_LEADERBOARD_BUTTON, (chatID, messageID) ->
-                mainMenuControl.mainMenuHandler(chatID, ConstantKB.CALLBACK_LEADERBOARD_BUTTON, messageID));
 
         //Обработка игрового меню
         commandsMap.put(ConstantKB.CALLBACK_BUILDS_BUTTON, (chatID, messageID) ->
