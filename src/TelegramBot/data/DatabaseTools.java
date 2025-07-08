@@ -138,18 +138,15 @@ public class DatabaseTools {
         return army;
     }
 
-    //Переделать надо(полностью)
-    public void setArmy(long chatID, Map<String, Integer> army) {
-        String insertArmy = "UPDATE " + ConstantDB.TABLE_ARMY +
-                " SET " +
-                ConstantDB.USER_WARRIOR_UNIT + "=" + army.get("warriorUnit") + ", " +
-                ConstantDB.USER_MAGE_UNIT + "=" + army.get("mageUnit") + ", " +
-                ConstantDB.USER_ARCHER_UNIT + "=" + army.get("archerUnit") + ", " +
-                ConstantDB.USER_PALADIN_UNIT + "=" + army.get("paladinUnit") + ", " +
-                ConstantDB.USER_HEALER_UNIT + "=" + army.get("healerUnit") +
-                " WHERE " + ConstantDB.USER_ID + "=" + chatID;
-        try (Statement statement = dbConnection.createStatement()) {
-            statement.executeUpdate(insertArmy);
+    //Передает изменения юнита
+    public void setArmy(long chatID, String unit, Integer newCountUnit) {
+        String insertArmy = "Update army set ? = ? where chatID = ?";
+        try (PreparedStatement statement = dbConnection.prepareStatement(insertArmy)) {
+            statement.setString(1, unit);
+            statement.setInt(2, newCountUnit);
+            statement.setLong(3, chatID);
+
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -241,27 +238,16 @@ public class DatabaseTools {
         return builds;
     }
 
-    //Переработать так же как и с армией
-    public void setBuilds(long chatID, Map<String, Integer> builds) {
-        String insertBuilds = "UPDATE " +
-                ConstantDB.TABLE_BUILDS +
-                " SET " +
-                ConstantDB.USER_QUARRY + "=" + builds.get(ConstantDB.USER_QUARRY) + ", " +
-                ConstantDB.USER_TOWN_HALL + "=" + builds.get(ConstantDB.USER_TOWN_HALL) + ", " +
-                ConstantDB.USER_FARM + "=" + builds.get(ConstantDB.USER_FARM) + ", " +
-                ConstantDB.USER_SAWMILL + "=" + builds.get(ConstantDB.USER_SAWMILL) + ", " +
-                ConstantDB.USER_TRADE_BUILD + "=" + builds.get(ConstantDB.USER_TRADE_BUILD) + ", " +
-                ConstantDB.USER_BARRACKS + "=" + builds.get(ConstantDB.USER_BARRACKS) + ", " +
-                ConstantDB.USER_MAGE_TOWER + "=" + builds.get(ConstantDB.USER_MAGE_TOWER) + ", " +
-                ConstantDB.USER_SHOOTING_RANGE + "=" + builds.get(ConstantDB.USER_SHOOTING_RANGE) + ", " +
-                ConstantDB.USER_CHAPEL_OF_LAST_HOPE + "=" + builds.get(ConstantDB.USER_CHAPEL_OF_LAST_HOPE) + ", " +
-                ConstantDB.USER_CHURCH + "=" + builds.get(ConstantDB.USER_CHURCH) +
-                " WHERE " +
-                ConstantDB.USER_ID + "=" + chatID;
+    //Передает новый уровень здания
+    public void setBuilds(long chatID, String build, Integer newBuildLevel) {
+        String insertBuild = "Update builds set ? = ? where chatID = ?";
+        try (PreparedStatement statement = dbConnection.prepareStatement(insertBuild)){
+            statement.setString(1,build);
+            statement.setInt(2, newBuildLevel);
+            statement.setLong(3, chatID);
 
-        try (Statement statement = dbConnection.createStatement()) {
-            statement.executeUpdate(insertBuilds);
-        } catch (SQLException e) {
+            statement.executeUpdate();
+        } catch (SQLException e){
             e.printStackTrace();
         }
     }

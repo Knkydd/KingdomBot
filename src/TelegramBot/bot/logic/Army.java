@@ -9,9 +9,7 @@ import TelegramBot.utility.EditMessage;
 import TelegramBot.utility.MessageSender;
 import TelegramBot.utility.keyboard.ConstantKB;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 public class Army {
     private final DatabaseTools databaseTools;
@@ -147,7 +145,7 @@ public class Army {
                 databaseTools.setResources(chatID, Resources.updateResources(
                         resources, ConstantResourcesForArmy.LIST_GOLD_FOR_ARMY.get(
                                 callbackData), 0));
-                databaseTools.setArmy(chatID, calculatingArmy);
+                databaseTools.setArmy(chatID, callbackData, army.get(callbackData) + 1);
                 messageSender.send(chatID, editMessage.warningMessage(
                         chatID, messageID, ConstantMessages.RECRUITING_UNIT_SUCCESSFUL));
                 databaseTools.setArmyPower(chatID, calculatingArmyPower);
