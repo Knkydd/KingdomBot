@@ -10,7 +10,6 @@ public class Keyboard {
 
     public Keyboard() {
         this.keyboardBuilder = new KeyboardBuilder();
-
     }
 
     public SendMessage startKeyboardMessage(long chatID) {
