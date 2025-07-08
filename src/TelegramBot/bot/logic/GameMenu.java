@@ -10,10 +10,10 @@ import TelegramBot.utility.keyboard.ConstantKB;
 import java.util.Map;
 
 public class GameMenu {
-    private DatabaseTools databaseTools;
-    private MessageSender messageSender;
-    private UserStateRepository userStateRepository;
-    private EditMessage editMessage;
+    private final DatabaseTools databaseTools;
+    private final MessageSender messageSender;
+    private final UserStateRepository userStateRepository;
+    private final EditMessage editMessage;
 
     public GameMenu(BotUtils botUtils) {
         this.messageSender = botUtils.getMessageSender();
@@ -26,19 +26,27 @@ public class GameMenu {
         switch (callbackData) {
             case ConstantKB.CALLBACK_ACTION_BUTTON:
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_ACTION_BUTTON);
-                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, ConstantMessages.ACTIONS_MESSAGE));
+                messageSender.send(
+                        chatID, editMessage.messageEdit(
+                                chatID, messageID, callbackData, ConstantMessages.ACTIONS_MESSAGE));
                 break;
 
             case ConstantKB.CALLBACK_BUILDS_BUTTON:
                 Map<String, Integer> builds = databaseTools.getBuilds(chatID);
-                userStateRepository.setState(chatID, ConstantKB.CALLBACK_BUILDS_BUTTON);
-                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, Builds.buildsMessage(builds)));
+                userStateRepository.setState(
+                        chatID, ConstantKB.CALLBACK_BUILDS_BUTTON);
+                messageSender.send(
+                        chatID, editMessage.messageEdit(
+                                chatID, messageID, callbackData, Builds.buildsMessage(builds)));
                 break;
             case ConstantKB.CALLBACK_ARMY_BUTTON:
                 Map<String, Integer> army = databaseTools.getArmy(chatID);
                 Integer armyPower = databaseTools.getArmyPower(chatID);
-                userStateRepository.setState(chatID, ConstantKB.CALLBACK_ARMY_BUTTON);
-                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, Army.armyMessage(army, armyPower)));
+                userStateRepository.setState(
+                        chatID, ConstantKB.CALLBACK_ARMY_BUTTON);
+                messageSender.send(
+                        chatID, editMessage.messageEdit(
+                                chatID, messageID, callbackData, Army.armyMessage(army, armyPower)));
                 break;
         }
     }
