@@ -34,7 +34,7 @@ public class Army {
     B - уровень здания, к которому относится юнит
     Const - константа, у всех по разному
     */
-    public static Integer calculatingArmyPower(Map<String, Integer> builds, Map<String, Integer> army) {
+    private Integer calculatingArmyPower(Map<String, Integer> builds, Map<String, Integer> army) {
         Integer warriorPower = army.get(ConstantDB.USER_WARRIOR_UNIT)
                 * builds.get(ConstantDB.USER_BARRACKS) * 100;
         Integer magePower = army.get(ConstantDB.USER_MAGE_UNIT)
@@ -70,13 +70,13 @@ public class Army {
     }
 
     //Рекрутинг войск
-    public static Map<String, Integer> recruitingArmy(Map<String, Integer> army, String unit) {
+    private Map<String, Integer> recruitingArmy(Map<String, Integer> army, String unit) {
         army.put(unit, army.get(unit) + 1);
         return army;
     }
 
     //Сообщение меню рекрутинга войск
-    public static String recruitingMessage(Map<String, Integer> army, Integer Gold) {
+    private String recruitingMessage(Map<String, Integer> army, Integer Gold) {
         StringBuilder message = new StringBuilder(
                 ConstantMessages.QUESTION_ABOUT_RECRUITING).append('\n');
 
@@ -102,7 +102,7 @@ public class Army {
     }
 
     //Проверка наличия здания, к которому привязан воин
-    public boolean checkRecruitingArmyOnBuilds(Map<String, Integer> builds, String unit) {
+    private boolean checkRecruitingArmyOnBuilds(Map<String, Integer> builds, String unit) {
         if (unit.equals(ConstantDB.USER_WARRIOR_UNIT)) {
             if (builds.get(ConstantDB.USER_BARRACKS).equals(0)) {
                 return false;

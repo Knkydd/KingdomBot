@@ -8,10 +8,10 @@ import TelegramBot.utility.keyboard.ConstantKB;
 import java.util.Map;
 
 public class AttackMenu {
-    private DatabaseTools databaseTools;
-    private MessageSender messageSender;
-    private UserStateRepository userStateRepository;
-    private EditMessage editMessage;
+    private final DatabaseTools databaseTools;
+    private final MessageSender messageSender;
+    private final UserStateRepository userStateRepository;
+    private final EditMessage editMessage;
 
     public AttackMenu(BotUtils botUtils) {
         this.databaseTools = botUtils.getDatabaseTools();
@@ -20,32 +20,34 @@ public class AttackMenu {
         this.userStateRepository = botUtils.getUserStateRepository();
     }
 
+    //Сообщение меню атаки
     private String attackMessage(Integer armyPower, Integer currentLevel) {
-        String message = "";
-        String tempMessage = "";
-        if (!currentLevel.equals(11)) {
-            tempMessage = "Уровень:   " + currentLevel + "\n\n" +
-                    "Для того, чтобы атаковать, вам нужно " + ConstantAttackMenu.ATTACK_LEVELS.get(currentLevel) + " мощи армии\n\n" +
-                    "На данный момент мощь вашей армии составляет: " + armyPower + "\n";
-        } else {
-            tempMessage = ConstantMessages.FINAL_BATTLE_MESSAGE;
+        if (currentLevel == 11) {
+            return ConstantMessages.FINAL_BATTLE_MESSAGE;
         }
-        message += tempMessage;
-        return message;
+
+        return new StringBuilder()
+                .append("Уровень:   ").append(currentLevel).append("\n\n")
+                .append("Для того, чтобы атаковать, вам нужно ")
+                .append(ConstantAttackMenu.ATTACK_LEVELS.get(currentLevel))
+                .append(" мощи армии\n\n")
+                .append("На данный момент мощь вашей армии составляет: ")
+                .append(armyPower).append("\n")
+                .toString();
     }
 
-    public String rewardsMessage(Integer currentLevel) {
-        String message = "";
+    //Сообщение меню награды
+    private String rewardsMessage(Integer currentLevel) {
         Map<String, Integer> rewards = ConstantReward.REWARD_FOR_VICTORY_ATTACK.get(currentLevel);
 
-        String tempMessage = "В награду за победу вы получаете " +
-                rewards.get("Wood") + " дерева, " +
-                rewards.get("Gold") + " золота, " +
-                rewards.get("Stone") + " камня и " +
-                rewards.get("Food") + " еды\n" +
-                "Они будут добавлены к вам на склад";
-        message += tempMessage;
-        return message;
+        return new StringBuilder()
+                .append("В награду за победу вы получаете ")
+                .append(rewards.get("Wood")).append(" дерева, ")
+                .append(rewards.get("Gold")).append(" золота, ")
+                .append(rewards.get("Stone")).append(" камня и ")
+                .append(rewards.get("Food")).append(" еды\n")
+                .append("Они будут добавлены к вам на склад")
+                .toString();
     }
 
     public void attackMenuHandler(long chatID, String callbackData, Integer messageID) {
@@ -56,19 +58,26 @@ public class AttackMenu {
             case ConstantKB.CALLBACK_ATTACK_BUTTON:
 
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_ATTACK_BUTTON);
-                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, ConstantKB.CALLBACK_ATTACK_BUTTON, attackMessage(armyPower, currentLevel)));
+                messageSender.send(chatID, editMessage.messageEdit(
+                        chatID, messageID, ConstantKB.CALLBACK_ATTACK_BUTTON,
+                        attackMessage(armyPower, currentLevel)));
 
                 break;
             case ConstantKB.CALLBACK_ATTACK_ENEMY_BUTTON:
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_ATTACK_ENEMY_BUTTON);
                 if (armyPower >= ConstantAttackMenu.ATTACK_LEVELS.get(currentLevel)) {
 
-                    databaseTools.setResources(chatID, Resources.updateResources(resources, ConstantReward.REWARD_FOR_VICTORY_ATTACK.get(currentLevel), 1));
-                    messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.ATTACK_ENEMY_SUCCESSFUL + rewardsMessage(currentLevel)));
+                    databaseTools.setResources(chatID, Resources.updateResources(
+                            resources, ConstantReward.REWARD_FOR_VICTORY_ATTACK.get(
+                                    currentLevel), 1));
+                    messageSender.send(chatID, editMessage.warningMessage(
+                            chatID, messageID,
+                            ConstantMessages.ATTACK_ENEMY_SUCCESSFUL + rewardsMessage(currentLevel)));
                     databaseTools.setLevelAttack(chatID, currentLevel + 1);
 
                 } else {
-                    messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.ATTACK_ENEMY_FAILED));
+                    messageSender.send(chatID, editMessage.warningMessage(
+                            chatID, messageID, ConstantMessages.ATTACK_ENEMY_FAILED));
                 }
         }
     }
