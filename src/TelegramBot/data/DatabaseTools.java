@@ -52,7 +52,7 @@ public class DatabaseTools {
 
     //Метод получения ресурсов
     public Map<String, Integer> getResources(long chatID) {
-        String getterResources = "Select food, gold, stone, wood from user where chatID=?";
+        String getterResources = "Select Food, Gold, Stone, Wood from resources where chatID=?";
         HashMap<String, Integer> resources = new HashMap<>(4);
 
         try (PreparedStatement statement = dbConnection.prepareStatement(getterResources)) {
@@ -60,10 +60,12 @@ public class DatabaseTools {
             statement.setLong(1, chatID);
 
             try (ResultSet result = statement.executeQuery()) {
-                resources.put("Wood", result.getInt("Wood"));
-                resources.put("Gold", result.getInt("Gold"));
-                resources.put("Food", result.getInt("Food"));
-                resources.put("Stone", result.getInt("Stone"));
+                if (result.next()) {
+                    resources.put("Wood", result.getInt("Wood"));
+                    resources.put("Gold", result.getInt("Gold"));
+                    resources.put("Food", result.getInt("Food"));
+                    resources.put("Stone", result.getInt("Stone"));
+                }
             }
 
         } catch (SQLException e) {
@@ -122,11 +124,13 @@ public class DatabaseTools {
             statement.setLong(1, chatID);
 
             try (ResultSet result = statement.executeQuery()) {
-                army.put(ConstantDB.USER_WARRIOR_UNIT, result.getInt(ConstantDB.USER_WARRIOR_UNIT));
-                army.put(ConstantDB.USER_MAGE_UNIT, result.getInt(ConstantDB.USER_MAGE_UNIT));
-                army.put(ConstantDB.USER_ARCHER_UNIT, result.getInt(ConstantDB.USER_ARCHER_UNIT));
-                army.put(ConstantDB.USER_PALADIN_UNIT, result.getInt(ConstantDB.USER_PALADIN_UNIT));
-                army.put(ConstantDB.USER_HEALER_UNIT, result.getInt(ConstantDB.USER_HEALER_UNIT));
+                if (result.next()) {
+                    army.put(ConstantDB.USER_WARRIOR_UNIT, result.getInt(ConstantDB.USER_WARRIOR_UNIT));
+                    army.put(ConstantDB.USER_MAGE_UNIT, result.getInt(ConstantDB.USER_MAGE_UNIT));
+                    army.put(ConstantDB.USER_ARCHER_UNIT, result.getInt(ConstantDB.USER_ARCHER_UNIT));
+                    army.put(ConstantDB.USER_PALADIN_UNIT, result.getInt(ConstantDB.USER_PALADIN_UNIT));
+                    army.put(ConstantDB.USER_HEALER_UNIT, result.getInt(ConstantDB.USER_HEALER_UNIT));
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -157,20 +161,24 @@ public class DatabaseTools {
         try (PreparedStatement statement = dbConnection.prepareStatement(insertArmyPower)) {
             statement.setInt(1, armyPower);
             statement.setLong(2, chatID);
+
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     //Получение силы армии
-    public Integer getArmyPower(long chatID){
+    public Integer getArmyPower(long chatID) {
         String getterArmyPower = "Select armyPower from army where chatID = ?";
-        try(PreparedStatement statement = dbConnection.prepareStatement(getterArmyPower)){
-            statement.setLong(1,chatID);
-            try(ResultSet result = statement.executeQuery()){
-                return result.getInt("armyPower");
+        try (PreparedStatement statement = dbConnection.prepareStatement(getterArmyPower)) {
+            statement.setLong(1, chatID);
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    return result.getInt("armyPower");
+                }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return -1;
@@ -179,13 +187,15 @@ public class DatabaseTools {
     //Получение уровня атаки, на котором находится пользователь
     public Integer getCurrentAttackLevel(long chatID) {
         String getterAttackLevel = "Select attackLevel from users where chatID = ?";
-        try (PreparedStatement statement = dbConnection.prepareStatement(getterAttackLevel)){
+        try (PreparedStatement statement = dbConnection.prepareStatement(getterAttackLevel)) {
             statement.setLong(1, chatID);
 
-            try(ResultSet result = statement.executeQuery()){
-                return result.getInt("attackLevel");
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    return result.getInt("attackLevel");
+                }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
@@ -194,12 +204,12 @@ public class DatabaseTools {
     //Обновление уровня атаки, на котором находится пользователь
     public void setLevelAttack(long chatID, Integer currentLevel) {
         String insertAttackLevel = "Update users set attackLevel = ? where chatID = ?";
-        try (PreparedStatement statement = dbConnection.prepareStatement(insertAttackLevel)){
+        try (PreparedStatement statement = dbConnection.prepareStatement(insertAttackLevel)) {
             statement.setInt(1, currentLevel);
             statement.setLong(2, chatID);
 
             statement.executeUpdate();
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -211,19 +221,21 @@ public class DatabaseTools {
         try (PreparedStatement statement = dbConnection.prepareStatement(getterBuilds)) {
             statement.setLong(1, chatID);
 
-            try (ResultSet result = statement.executeQuery()){
-                builds.put(ConstantDB.USER_TOWN_HALL, result.getInt(ConstantDB.USER_TOWN_HALL));
-                builds.put(ConstantDB.USER_SAWMILL, result.getInt(ConstantDB.USER_SAWMILL));
-                builds.put(ConstantDB.USER_QUARRY, result.getInt(ConstantDB.USER_QUARRY));
-                builds.put(ConstantDB.USER_FARM, result.getInt(ConstantDB.USER_FARM));
-                builds.put(ConstantDB.USER_TRADE_BUILD, result.getInt(ConstantDB.USER_TRADE_BUILD));
-                builds.put(ConstantDB.USER_BARRACKS, result.getInt(ConstantDB.USER_BARRACKS));
-                builds.put(ConstantDB.USER_MAGE_TOWER, result.getInt(ConstantDB.USER_MAGE_TOWER));
-                builds.put(ConstantDB.USER_SHOOTING_RANGE, result.getInt(ConstantDB.USER_SHOOTING_RANGE));
-                builds.put(ConstantDB.USER_CHAPEL_OF_LAST_HOPE, result.getInt(ConstantDB.USER_CHAPEL_OF_LAST_HOPE));
-                builds.put(ConstantDB.USER_CHURCH, result.getInt(ConstantDB.USER_CHURCH));
+            try (ResultSet result = statement.executeQuery()) {
+                if (result.next()) {
+                    builds.put(ConstantDB.USER_TOWN_HALL, result.getInt(ConstantDB.USER_TOWN_HALL));
+                    builds.put(ConstantDB.USER_SAWMILL, result.getInt(ConstantDB.USER_SAWMILL));
+                    builds.put(ConstantDB.USER_QUARRY, result.getInt(ConstantDB.USER_QUARRY));
+                    builds.put(ConstantDB.USER_FARM, result.getInt(ConstantDB.USER_FARM));
+                    builds.put(ConstantDB.USER_TRADE_BUILD, result.getInt(ConstantDB.USER_TRADE_BUILD));
+                    builds.put(ConstantDB.USER_BARRACKS, result.getInt(ConstantDB.USER_BARRACKS));
+                    builds.put(ConstantDB.USER_MAGE_TOWER, result.getInt(ConstantDB.USER_MAGE_TOWER));
+                    builds.put(ConstantDB.USER_SHOOTING_RANGE, result.getInt(ConstantDB.USER_SHOOTING_RANGE));
+                    builds.put(ConstantDB.USER_CHAPEL_OF_LAST_HOPE, result.getInt(ConstantDB.USER_CHAPEL_OF_LAST_HOPE));
+                    builds.put(ConstantDB.USER_CHURCH, result.getInt(ConstantDB.USER_CHURCH));
+                }
             }
-        } catch (SQLException e){
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return builds;
