@@ -65,7 +65,7 @@ public class AttackMenu {
 
                     databaseTools.setResources(chatID, Resources.updateResources(resources, ConstantReward.REWARD_FOR_VICTORY_ATTACK.get(currentLevel), 1));
                     messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.ATTACK_ENEMY_SUCCESSFUL + rewardsMessage(currentLevel)));
-                    databaseTools.setCurrentLevelAttack(chatID, currentLevel + 1);
+                    databaseTools.setLevelAttack(chatID, currentLevel + 1);
 
                 } else {
                     messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.ATTACK_ENEMY_FAILED));

@@ -3,38 +3,45 @@ package TelegramBot.data;
 import java.sql.*;
 import java.util.*;
 
-public class DatabaseTools extends Config {
+public class DatabaseTools {
     private final Connection dbConnection;
 
     public DatabaseTools(Connection dbConnection) {
         this.dbConnection = dbConnection;
     }
 
+    //Регистрация пользователя
     public void registrationUser(long chatID) {
-        String insertRegistration = "BEGIN;" +
-                "INSERT INTO " + ConstantDB.TABLE_USERS + "(" +
-                ConstantDB.USER_ID + ", " + ConstantDB.USER_NAME +
-                ") VALUES(" + chatID + "');" +
-                "INSERT INTO " + ConstantDB.TABLE_ARMY + "(" +
-                ConstantDB.USER_ID + ") VALUES(" + chatID + ");" +
-                "INSERT INTO " + ConstantDB.TABLE_RESOURCES + "(" +
-                ConstantDB.USER_ID + ") VALUES(" + chatID + ");" +
-                "INSERT INTO " + ConstantDB.TABLE_BUILDS + "(" +
-                ConstantDB.USER_ID + ") VALUES(" + chatID + ");" +
-                "COMMIT;";
-        try (Statement statement = dbConnection.createStatement()) {
-            statement.executeUpdate(insertRegistration);
+        String insertRegistration = """
+                Begin;
+                Insert Into users(chatID) values(?);
+                Insert into builds(chatID) values(?);
+                Insert into resources(chatID) values(?);
+                Insert into army(chatID) values(?);
+                Commit;
+                """;
+        try (PreparedStatement statement = dbConnection.prepareStatement(insertRegistration)) {
+
+            statement.setLong(1, chatID);
+            statement.setLong(2, chatID);
+            statement.setLong(3, chatID);
+            statement.setLong(4, chatID);
+
+            statement.executeUpdate();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    //Проверка, зарегистрирован ли пользователь
     public boolean isRegistered(long chatID) {
-        ResultSet result = null;
-        String regString = String.format("SELECT %s FROM %s where %s=%s", ConstantDB.USER_ID, ConstantDB.TABLE_USERS, ConstantDB.USER_ID, chatID);
-        try (Statement statement = dbConnection.createStatement()) {
-            result = statement.executeQuery(regString);
-            if (result.next()) {
+        String insertRegister = "Select chatID from users where chatID=?";
+        try (PreparedStatement statement = dbConnection.prepareStatement(insertRegister)) {
+
+            statement.setLong(1, chatID);
+
+            if (statement.executeQuery().next()) {
                 return true;
             }
         } catch (SQLException e) {
@@ -43,76 +50,83 @@ public class DatabaseTools extends Config {
         return false;
     }
 
+    //Метод получения ресурсов
     public Map<String, Integer> getResources(long chatID) {
-        Map<String, Integer> resources = new HashMap<>();
-        ResultSet resultSet = null;
-        String getterResources = "SELECT * FROM " + ConstantDB.TABLE_RESOURCES + " WHERE " + ConstantDB.USER_ID + "=" + chatID;
-        try (Statement statement = dbConnection.createStatement()) {
-            resultSet = statement.executeQuery(getterResources);
-            while (resultSet.next()) {
-                resources.put("Wood", resultSet.getInt("Wood"));
-                resources.put("Gold", resultSet.getInt("Gold"));
-                resources.put("Food", resultSet.getInt("Food"));
-                resources.put("Stone", resultSet.getInt("Stone"));
+        String getterResources = "Select food, gold, stone, wood from user where chatID=?";
+        HashMap<String, Integer> resources = new HashMap<>(4);
+
+        try (PreparedStatement statement = dbConnection.prepareStatement(getterResources)) {
+
+            statement.setLong(1, chatID);
+
+            try (ResultSet result = statement.executeQuery()) {
+                resources.put("Wood", result.getInt("Wood"));
+                resources.put("Gold", result.getInt("Gold"));
+                resources.put("Food", result.getInt("Food"));
+                resources.put("Stone", result.getInt("Stone"));
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return resources;
     }
 
+    //Метод обновления ресурсов
     public void setResources(long chatID, Map<String, Integer> resources) {
-        String insertResources = "UPDATE " + ConstantDB.TABLE_RESOURCES +
-                " SET " +
-                ConstantDB.USER_GOLD + "=" + resources.get("Gold") + ", " +
-                ConstantDB.USER_WOOD + "=" + resources.get("Wood") + ", " +
-                ConstantDB.USER_FOOD + "=" + resources.get("Food") + ", " +
-                ConstantDB.USER_STONE + "=" + resources.get("Stone") +
-                " WHERE " + ConstantDB.USER_ID + "=" + chatID;
-        try (Statement statement = dbConnection.createStatement()) {
-            statement.executeUpdate(insertResources);
+        String insertResources = """
+                Update resources Set Wood = ?, 
+                Gold = ?, 
+                Food = ?, 
+                Stone = ? where chatID = ?
+                """;
+        try (PreparedStatement statement = dbConnection.prepareStatement(insertResources)) {
+            statement.setInt(1, resources.get("Wood"));
+            statement.setInt(2, resources.get("Gold"));
+            statement.setInt(3, resources.get("Food"));
+            statement.setInt(4, resources.get("Stone"));
+            statement.setLong(5, chatID);
+
+            statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public Map<String, Integer> getLeaderboard() {
-        ResultSet resultSet = null;
-        String getterUsername = "SELECT * FROM " +
-                ConstantDB.TABLE_USERS +
-                " ORDER BY " +
-                ConstantDB.USER_ARMY_POWER +
-                " DESC";
-        int i = 0;
-        Map<String, Integer> leaderboard = new LinkedHashMap<>();
-        try (Statement statement = dbConnection.createStatement()) {
-            resultSet = statement.executeQuery(getterUsername);
-            while (resultSet.next() && i != 6) {
-                leaderboard.put(resultSet.getString(ConstantDB.USER_NAME), resultSet.getInt(ConstantDB.USER_ARMY_POWER));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return leaderboard;
-    }
+    //Пока что не нужно, но это метод получения таблицы лидеров
+//    public Map<String, Integer> getLeaderboard() {
+//        ResultSet resultSet = null;
+//        String getterUsername = "SELECT * FROM " +
+//                ConstantDB.TABLE_USERS +
+//                " ORDER BY " +
+//                ConstantDB.USER_ARMY_POWER +
+//                " DESC";
+//        int i = 0;
+//        Map<String, Integer> leaderboard = new LinkedHashMap<>();
+//        try (Statement statement = dbConnection.createStatement()) {
+//            resultSet = statement.executeQuery(getterUsername);
+//            while (resultSet.next() && i != 6) {
+//                leaderboard.put(resultSet.getString(ConstantDB.USER_NAME), resultSet.getInt(ConstantDB.USER_ARMY_POWER));
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return leaderboard;
+//    }
 
+    //Получение армии(количества воинов)
     public Map<String, Integer> getArmy(long chatID) {
-        Map<String, Integer> army = new HashMap<>();
-        ResultSet resultSet = null;
-        String getterArmy = "SELECT * FROM " +
-                ConstantDB.TABLE_ARMY +
-                " WHERE " +
-                ConstantDB.USER_ID +
-                "=" +
-                chatID;
-        try (Statement statement = dbConnection.createStatement()) {
-            resultSet = statement.executeQuery(getterArmy);
-            while (resultSet.next()) {
-                army.put(ConstantDB.USER_WARRIOR_UNIT, resultSet.getInt(ConstantDB.USER_WARRIOR_UNIT));
-                army.put(ConstantDB.USER_MAGE_UNIT, resultSet.getInt(ConstantDB.USER_MAGE_UNIT));
-                army.put(ConstantDB.USER_ARCHER_UNIT, resultSet.getInt(ConstantDB.USER_ARCHER_UNIT));
-                army.put(ConstantDB.USER_PALADIN_UNIT, resultSet.getInt(ConstantDB.USER_PALADIN_UNIT));
-                army.put(ConstantDB.USER_HEALER_UNIT, resultSet.getInt(ConstantDB.USER_HEALER_UNIT));
+        String getterArmy = "Select * from army where chatID = ?";
+        HashMap<String, Integer> army = new HashMap<>();
+        try (PreparedStatement statement = dbConnection.prepareStatement(getterArmy)) {
+            statement.setLong(1, chatID);
+
+            try (ResultSet result = statement.executeQuery()) {
+                army.put(ConstantDB.USER_WARRIOR_UNIT, result.getInt(ConstantDB.USER_WARRIOR_UNIT));
+                army.put(ConstantDB.USER_MAGE_UNIT, result.getInt(ConstantDB.USER_MAGE_UNIT));
+                army.put(ConstantDB.USER_ARCHER_UNIT, result.getInt(ConstantDB.USER_ARCHER_UNIT));
+                army.put(ConstantDB.USER_PALADIN_UNIT, result.getInt(ConstantDB.USER_PALADIN_UNIT));
+                army.put(ConstantDB.USER_HEALER_UNIT, result.getInt(ConstantDB.USER_HEALER_UNIT));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,6 +134,7 @@ public class DatabaseTools extends Config {
         return army;
     }
 
+    //Переделать надо(полностью)
     public void setArmy(long chatID, Map<String, Integer> army) {
         String insertArmy = "UPDATE " + ConstantDB.TABLE_ARMY +
                 " SET " +
@@ -136,115 +151,85 @@ public class DatabaseTools extends Config {
         }
     }
 
+    //Обновление силы армии
     public void setArmyPower(long chatID, Integer armyPower) {
-        String insertArmyPower = "UPDATE " +
-                ConstantDB.TABLE_USERS +
-                " SET " +
-                ConstantDB.USER_ARMY_POWER +
-                "=" +
-                armyPower +
-                " WHERE " +
-                ConstantDB.USER_ID +
-                "=" +
-                chatID;
-        try (Statement statement = dbConnection.createStatement()) {
-            statement.executeUpdate(insertArmyPower);
+        String insertArmyPower = "Update army set armyPower = ? where chatID = ?";
+        try (PreparedStatement statement = dbConnection.prepareStatement(insertArmyPower)) {
+            statement.setInt(1, armyPower);
+            statement.setLong(2, chatID);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    //Получение силы армии
+    public Integer getArmyPower(long chatID){
+        String getterArmyPower = "Select armyPower from army where chatID = ?";
+        try(PreparedStatement statement = dbConnection.prepareStatement(getterArmyPower)){
+            statement.setLong(1,chatID);
+            try(ResultSet result = statement.executeQuery()){
+                return result.getInt("armyPower");
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    //Получение уровня атаки, на котором находится пользователь
     public Integer getCurrentAttackLevel(long chatID) {
-        Integer currentAttackLevel = 1;
-        ResultSet resultSet = null;
-        String getterAttackLevel = "SELECT " +
-                ConstantDB.USER_LEVEL_ATTACK +
-                " FROM " +
-                ConstantDB.TABLE_ARMY +
-                " WHERE " +
-                ConstantDB.USER_ID +
-                "=" +
-                chatID;
-        try (Statement statement = dbConnection.createStatement()) {
-            resultSet = statement.executeQuery(getterAttackLevel);
-            while (resultSet.next()) {
-                currentAttackLevel = resultSet.getInt(ConstantDB.USER_LEVEL_ATTACK);
+        String getterAttackLevel = "Select attackLevel from users where chatID = ?";
+        try (PreparedStatement statement = dbConnection.prepareStatement(getterAttackLevel)){
+            statement.setLong(1, chatID);
+
+            try(ResultSet result = statement.executeQuery()){
+                return result.getInt("attackLevel");
             }
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
         }
-        return currentAttackLevel;
+        return 0;
     }
 
-    public void setCurrentLevelAttack(long chatID, Integer currentLevel) {
-        String insertLevelAttack = "UPDATE " +
-                ConstantDB.TABLE_ARMY +
-                " SET " +
-                ConstantDB.USER_LEVEL_ATTACK +
-                "=" +
-                currentLevel +
-                " WHERE " +
-                ConstantDB.USER_ID +
-                "=" +
-                chatID;
-        try (Statement statement = dbConnection.createStatement()) {
-            statement.executeUpdate(insertLevelAttack);
-        } catch (SQLException e) {
+    //Обновление уровня атаки, на котором находится пользователь
+    public void setLevelAttack(long chatID, Integer currentLevel) {
+        String insertAttackLevel = "Update users set attackLevel = ? where chatID = ?";
+        try (PreparedStatement statement = dbConnection.prepareStatement(insertAttackLevel)){
+            statement.setInt(1, currentLevel);
+            statement.setLong(2, chatID);
+
+            statement.executeUpdate();
+        } catch (SQLException e){
             e.printStackTrace();
         }
     }
 
-    public Integer getArmyPower(long chatID) {
-        Integer armyPower = 0;
-        ResultSet resultSet = null;
-        String getterArmyPower = "SELECT " +
-                ConstantDB.USER_ARMY_POWER +
-                " FROM " +
-                ConstantDB.TABLE_USERS +
-                " WHERE " +
-                ConstantDB.USER_ID +
-                "=" +
-                chatID;
-        try (Statement statement = dbConnection.createStatement()) {
-            resultSet = statement.executeQuery(getterArmyPower);
-            if (resultSet.next()) {
-                armyPower = resultSet.getInt(ConstantDB.USER_ARMY_POWER);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return armyPower;
-    }
-
+    //Получение уровней построек
     public Map<String, Integer> getBuilds(long chatID) {
-        Map<String, Integer> builds = new HashMap<>();
-        ResultSet resultSet = null;
-        String getterBuilds = "SELECT * FROM " +
-                ConstantDB.TABLE_BUILDS +
-                " WHERE " +
-                ConstantDB.USER_ID +
-                "=" +
-                chatID;
-        try (Statement statement = dbConnection.createStatement()) {
-            resultSet = statement.executeQuery(getterBuilds);
-            while (resultSet.next()) {
-                builds.put(ConstantDB.USER_TOWN_HALL, resultSet.getInt(ConstantDB.USER_TOWN_HALL));
-                builds.put(ConstantDB.USER_SAWMILL, resultSet.getInt(ConstantDB.USER_SAWMILL));
-                builds.put(ConstantDB.USER_QUARRY, resultSet.getInt(ConstantDB.USER_QUARRY));
-                builds.put(ConstantDB.USER_FARM, resultSet.getInt(ConstantDB.USER_FARM));
-                builds.put(ConstantDB.USER_TRADE_BUILD, resultSet.getInt(ConstantDB.USER_TRADE_BUILD));
-                builds.put(ConstantDB.USER_BARRACKS, resultSet.getInt(ConstantDB.USER_BARRACKS));
-                builds.put(ConstantDB.USER_MAGE_TOWER, resultSet.getInt(ConstantDB.USER_MAGE_TOWER));
-                builds.put(ConstantDB.USER_SHOOTING_RANGE, resultSet.getInt(ConstantDB.USER_SHOOTING_RANGE));
-                builds.put(ConstantDB.USER_CHAPEL_OF_LAST_HOPE, resultSet.getInt(ConstantDB.USER_CHAPEL_OF_LAST_HOPE));
-                builds.put(ConstantDB.USER_CHURCH, resultSet.getInt(ConstantDB.USER_CHURCH));
+        String getterBuilds = "Select * from builds where chatID = ?";
+        HashMap<String, Integer> builds = new HashMap<>();
+        try (PreparedStatement statement = dbConnection.prepareStatement(getterBuilds)) {
+            statement.setLong(1, chatID);
+
+            try (ResultSet result = statement.executeQuery()){
+                builds.put(ConstantDB.USER_TOWN_HALL, result.getInt(ConstantDB.USER_TOWN_HALL));
+                builds.put(ConstantDB.USER_SAWMILL, result.getInt(ConstantDB.USER_SAWMILL));
+                builds.put(ConstantDB.USER_QUARRY, result.getInt(ConstantDB.USER_QUARRY));
+                builds.put(ConstantDB.USER_FARM, result.getInt(ConstantDB.USER_FARM));
+                builds.put(ConstantDB.USER_TRADE_BUILD, result.getInt(ConstantDB.USER_TRADE_BUILD));
+                builds.put(ConstantDB.USER_BARRACKS, result.getInt(ConstantDB.USER_BARRACKS));
+                builds.put(ConstantDB.USER_MAGE_TOWER, result.getInt(ConstantDB.USER_MAGE_TOWER));
+                builds.put(ConstantDB.USER_SHOOTING_RANGE, result.getInt(ConstantDB.USER_SHOOTING_RANGE));
+                builds.put(ConstantDB.USER_CHAPEL_OF_LAST_HOPE, result.getInt(ConstantDB.USER_CHAPEL_OF_LAST_HOPE));
+                builds.put(ConstantDB.USER_CHURCH, result.getInt(ConstantDB.USER_CHURCH));
             }
-        } catch (SQLException e) {
+        } catch (SQLException e){
             e.printStackTrace();
         }
         return builds;
     }
 
+    //Переработать так же как и с армией
     public void setBuilds(long chatID, Map<String, Integer> builds) {
         String insertBuilds = "UPDATE " +
                 ConstantDB.TABLE_BUILDS +

@@ -28,6 +28,9 @@ public class MainMenu {
     }
 
     public void mainMenuStart(long chatID){
+        if(!databaseTools.isRegistered(chatID)){
+            databaseTools.registrationUser(chatID);
+        }
         if (userStateRepository.isEmpty()) {
             userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
         } else {

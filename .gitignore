@@ -3,6 +3,8 @@
 /.idea/workspace.xml
 #Token
 /Token.txt
+#dbConfig
+/db_data.txt
 #More
 /src/TelegramBot/data/Config.java
 /target/
