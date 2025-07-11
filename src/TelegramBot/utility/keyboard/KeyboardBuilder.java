@@ -29,7 +29,7 @@ public class KeyboardBuilder {
         return keyboard;
     }
 
-    public InlineKeyboardButton createButton(String text, String callbackData) {
+    private InlineKeyboardButton createButton(String text, String callbackData) {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(text);
         button.setCallbackData(callbackData);

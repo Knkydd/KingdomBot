@@ -14,14 +14,14 @@ public class EditMessage {
         EditMessageText messageEdited = new EditMessageText();
         messageEdited.setMessageId(messageID);
         messageEdited.setChatId(chatID);
+        System.out.println(callbackData);
         switch (callbackData) {
             case ConstantKB.MAIN_MENU:
                 messageEdited.setText(text);
                 messageEdited.setReplyMarkup(keyboard.startKeyboard());
                 break;
 
-            case ConstantKB.CALLBACK_START_BUTTON:
-            case ConstantKB.CALLBACK_CONTINUE_BUTTON:
+            case ConstantKB.CALLBACK_PLAY_BUTTON:
                 messageEdited.setText(text);
                 messageEdited.setReplyMarkup(keyboard.gameKeyboard());
                 break;
@@ -29,11 +29,6 @@ public class EditMessage {
             case ConstantKB.CALLBACK_ACTION_BUTTON:
                 messageEdited.setText(ConstantMessages.ACTIONS_MESSAGE);
                 messageEdited.setReplyMarkup(keyboard.actionKeyboard());
-                break;
-
-            case ConstantKB.CALLBACK_LEADERBOARD_BUTTON:
-                messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.leaderboardKeyboard());
                 break;
 
             case ConstantKB.CALLBACK_BUILDS_BUTTON:

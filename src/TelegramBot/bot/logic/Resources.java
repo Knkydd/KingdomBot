@@ -7,12 +7,12 @@ import java.util.Set;
 
 public class Resources {
     public static String resourceMessage(Map<String, Integer> resources) {
-        String msg = String.format("Ресурсы, которые у вас есть: " +
-                "\nЕда: %s\n" +
-                "Дерево: %s\n" +
-                "Золото: %s\n" +
-                "Камень: %s\n", resources.get("Food"), resources.get("Wood"), resources.get("Gold"), resources.get("Stone"));
-        return msg;
+        return "Ресурсы, которые у вас есть: " +
+                "\nЕда: " + resources.get("Food") + "\n" +
+                "Дерево: " + resources.get("Wood") + "\n" +
+                "Золото: " + resources.get("Gold") + "\n" +
+                "Камень: " + resources.get("Stone") + "\n";
+
     }
 
     public static boolean checkResourcesOnSpending(Map<String, Integer> resources, Map<String, Integer> expendedResources) {

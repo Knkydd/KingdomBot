@@ -9,9 +9,7 @@ import TelegramBot.utility.EditMessage;
 import TelegramBot.utility.MessageSender;
 import TelegramBot.utility.keyboard.ConstantKB;
 
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 public class Army {
     private final DatabaseTools databaseTools;
@@ -26,55 +24,72 @@ public class Army {
         this.editMessage = botUtils.getEditMessage();
     }
 
-    public static Integer calculatingArmyPower(Map<String, Integer> builds, Map<String, Integer> army) {
-        Integer warriorPower = army.get(ConstantDB.USER_WARRIOR_UNIT) * builds.get(ConstantDB.USER_BARRACKS) * 100;
-        Integer magePower = army.get(ConstantDB.USER_MAGE_UNIT) * builds.get(ConstantDB.USER_MAGE_TOWER) * 200;
-        Integer archerPower = army.get(ConstantDB.USER_ARCHER_UNIT) * builds.get(ConstantDB.USER_SHOOTING_RANGE) * 300;
-        Integer paladinPower = army.get(ConstantDB.USER_PALADIN_UNIT) * builds.get(ConstantDB.USER_CHAPEL_OF_LAST_HOPE) * 500;
-        Integer healerPower = army.get(ConstantDB.USER_HEALER_UNIT) * builds.get(ConstantDB.USER_CHURCH) * 700;
-        Integer armyPower = warriorPower + magePower + archerPower + paladinPower + healerPower;
-        return armyPower;
+    /*
+    Подсчет мощи армии по формуле sum(v), где v - мощь юнита
+
+    Подсчет мощи юнита по формуле U * B * Const, где
+    U - Количество определенного типа юнита
+    B - уровень здания, к которому относится юнит
+    Const - константа, у всех по разному
+    */
+    private Integer calculatingArmyPower(Map<String, Integer> builds, Map<String, Integer> army) {
+        Integer warriorPower = army.get(ConstantDB.USER_WARRIOR_UNIT)
+                * builds.get(ConstantDB.USER_BARRACKS) * 100;
+        Integer magePower = army.get(ConstantDB.USER_MAGE_UNIT)
+                * builds.get(ConstantDB.USER_MAGE_TOWER) * 200;
+        Integer archerPower = army.get(ConstantDB.USER_ARCHER_UNIT)
+                * builds.get(ConstantDB.USER_SHOOTING_RANGE) * 300;
+        Integer paladinPower = army.get(ConstantDB.USER_PALADIN_UNIT)
+                * builds.get(ConstantDB.USER_CHAPEL_OF_LAST_HOPE) * 500;
+        Integer healerPower = army.get(ConstantDB.USER_HEALER_UNIT)
+                * builds.get(ConstantDB.USER_CHURCH) * 700;
+        return warriorPower + magePower + archerPower + paladinPower + healerPower;
     }
 
+    //Сообщение в меню армии(показывает кто есть)
     public static String armyMessage(Map<String, Integer> army, Integer armyPower) {
-        String message = ConstantMessages.ARMY_MESSAGE;
-        String tempMessage = "";
-        Set<String> armyKeys = army.keySet();
-        Iterator iteratorArmyKeys = armyKeys.iterator();
-        Integer i = 1;
-        while (iteratorArmyKeys.hasNext()) {
-            String temp = (String) iteratorArmyKeys.next();
-            tempMessage = String.format("%s        %s         Юнитов: %s\n", i, ConstantDB.accordanceListOfArmy.get(temp), army.get(temp));
-            message += tempMessage;
-            i++;
+        StringBuilder message = new StringBuilder(
+                ConstantMessages.ARMY_MESSAGE).append('\n');
+
+        int counter = 1;
+
+        for (Map.Entry<String, Integer> entry : army.entrySet()) {
+            message.append(counter++)
+                    .append("          ")
+                    .append(ConstantDB.accordanceListOfArmy.get(entry.getKey()))
+                    .append("         Юнитов: ")
+                    .append(entry.getValue())
+                    .append('\n');
         }
-        message += "\n";
-        tempMessage = String.format("Мощь вашей армии составляет:   %s", armyPower);
-        message += tempMessage;
-        return message;
+
+        return message.append("\nМощь вашей армии составляет:   ")
+                .append(armyPower)
+                .toString();
     }
 
-    public static Map<String, Integer> recruitingArmy(Map<String, Integer> army, String unit) {
+    //Рекрутинг войск
+    private Map<String, Integer> recruitingArmy(Map<String, Integer> army, String unit) {
         army.put(unit, army.get(unit) + 1);
         return army;
     }
 
-    public static String recruitingMessage(Map<String, Integer> army, Integer Gold) {
-        String message = ConstantMessages.QUESTION_ABOUT_RECRUITING;
-        String tempMessage = "";
-        Set<String> armyKeys = army.keySet();
-        Integer i = 1;
-        Iterator iteratorArmyKeys = armyKeys.iterator();
-        while (iteratorArmyKeys.hasNext()) {
-            String temp = (String) iteratorArmyKeys.next();
-            tempMessage = String.format("%s     %s      %s\n", i, ConstantDB.accordanceListOfArmy.get(temp), ConstantResourcesForArmy.LIST_GOLD_FOR_ARMY.get(temp).get("Gold"));
-            message += tempMessage;
-            i++;
+    //Сообщение меню рекрутинга войск
+    private String recruitingMessage(Map<String, Integer> army, Integer Gold) {
+        StringBuilder message = new StringBuilder(
+                ConstantMessages.QUESTION_ABOUT_RECRUITING).append('\n');
+
+        int counter = 1;
+
+        for (Map.Entry<String, Integer> entry : army.entrySet()) {
+            String unitName = ConstantDB.accordanceListOfArmy.get(entry.getKey());
+            int unitCost = ConstantResourcesForArmy.LIST_GOLD_FOR_ARMY.get(entry.getKey()).get("Gold");
+
+            message.append(String.format("%d     %s      %d%n", counter++, unitName, unitCost));
         }
-        message += "\n";
-        tempMessage = String.format("Ваше золото:     %s", Gold);
-        message += tempMessage;
-        return message;
+
+        return message.append("\nВаше золото:       ")
+                .append(Gold)
+                .toString();
     }
 
     public void armyRecruitingHandler(long chatID, String callbackData, Integer messageID) {
@@ -84,7 +99,8 @@ public class Army {
 
     }
 
-    public boolean checkRecruitingArmyOnBuilds(Map<String, Integer> builds, String unit) {
+    //Проверка наличия здания, к которому привязан воин
+    private boolean checkRecruitingArmyOnBuilds(Map<String, Integer> builds, String unit) {
         if (unit.equals(ConstantDB.USER_WARRIOR_UNIT)) {
             if (builds.get(ConstantDB.USER_BARRACKS).equals(0)) {
                 return false;
@@ -121,22 +137,28 @@ public class Army {
         Map<String, Integer> builds = databaseTools.getBuilds(chatID);
 
         if (checkRecruitingArmyOnBuilds(builds, callbackData)) {
-            if (Resources.checkResourcesOnSpending(resources, ConstantResourcesForArmy.LIST_GOLD_FOR_ARMY.get(callbackData))) {
+            if (Resources.checkResourcesOnSpending(
+                    resources, ConstantResourcesForArmy.LIST_GOLD_FOR_ARMY.get(callbackData))) {
 
                 Map<String, Integer> calculatingArmy = recruitingArmy(army, callbackData);
                 Integer calculatingArmyPower = calculatingArmyPower(builds, calculatingArmy);
-                databaseTools.setResources(chatID, Resources.updateResources(resources, ConstantResourcesForArmy.LIST_GOLD_FOR_ARMY.get(callbackData), 0));
-                databaseTools.setArmy(chatID, calculatingArmy);
-                messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.RECRUITING_UNIT_SUCCESSFUL));
+                databaseTools.setResources(chatID, Resources.updateResources(
+                        resources, ConstantResourcesForArmy.LIST_GOLD_FOR_ARMY.get(
+                                callbackData), 0));
+                databaseTools.setArmy(chatID, callbackData, army.get(callbackData) + 1);
+                messageSender.send(chatID, editMessage.warningMessage(
+                        chatID, messageID, ConstantMessages.RECRUITING_UNIT_SUCCESSFUL));
                 databaseTools.setArmyPower(chatID, calculatingArmyPower);
 
             } else {
 
-                messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.RECRUITING_UNIT_FAILED));
+                messageSender.send(chatID, editMessage.warningMessage(
+                        chatID, messageID, ConstantMessages.RECRUITING_UNIT_FAILED));
 
             }
         } else {
-            messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.UNIT_BUILD_NOT_BUILT));
+            messageSender.send(chatID, editMessage.warningMessage(
+                    chatID, messageID, ConstantMessages.UNIT_BUILD_NOT_BUILT));
         }
     }
 }

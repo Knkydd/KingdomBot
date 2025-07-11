@@ -1,9 +1,10 @@
 package TelegramBot.bot.logic;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class UserStateRepository {
-    private final static Map<Long, List<String>> userStates = new HashMap<>();
+    private final static Map<Long, List<String>> userStates = new ConcurrentHashMap<>();
 
     public boolean isEmpty(){
         if(userStates.isEmpty())
@@ -16,20 +17,26 @@ public class UserStateRepository {
     }
 
     public void setState(long chatID, String newState) {
-        userStates.computeIfAbsent(chatID, k -> new ArrayList<>()).add(newState);
+        if (userStates.get(chatID) == null) {
+            userStates.computeIfAbsent(chatID, k -> new ArrayList<>()).add(newState);
+        } else {
+            userStates.get(chatID).add(newState);
+        }
+    }
+
+    public void gt(){
+        System.out.println(userStates);
     }
 
     public String getState(long chatID){
         List<String> states = userStates.get(chatID);
         String result = "";
-        if(!states.isEmpty()) {
-            states.remove(states.size());
-        }
         if(states.isEmpty()){
             result = "mainMenu";
         } else {
-            result = states.get(states.size());
-            states.remove(states.size());
+            states.remove(states.size()-1);
+            result = states.get(states.size()-1);
+            states.remove(states.size()-1);
         }
         return result;
     }
