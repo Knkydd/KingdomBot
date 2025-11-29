@@ -4,12 +4,6 @@ import TelegramBot.utility.keyboard.*;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 
 public class EditMessage {
-    private final Keyboard keyboard;
-
-    public EditMessage() {
-        this.keyboard = new Keyboard();
-    }
-
     public EditMessageText messageEdit(long chatID, Integer messageID, String callbackData, String text) {
         EditMessageText messageEdited = new EditMessageText();
         messageEdited.setMessageId(messageID);
@@ -18,49 +12,49 @@ public class EditMessage {
         switch (callbackData) {
             case ConstantKB.MAIN_MENU:
                 messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.startKeyboard());
+                messageEdited.setReplyMarkup(Keyboard.startKeyboard());
                 break;
 
             case ConstantKB.CALLBACK_PLAY_BUTTON:
                 messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.gameKeyboard());
+                messageEdited.setReplyMarkup(Keyboard.gameKeyboard());
                 break;
 
             case ConstantKB.CALLBACK_ACTION_BUTTON:
                 messageEdited.setText(ConstantMessages.ACTIONS_MESSAGE);
-                messageEdited.setReplyMarkup(keyboard.actionKeyboard());
+                messageEdited.setReplyMarkup(Keyboard.actionKeyboard());
                 break;
 
             case ConstantKB.CALLBACK_BUILDS_BUTTON:
                 messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.buildsKeyboard());
+                messageEdited.setReplyMarkup(Keyboard.buildsKeyboard());
                 break;
 
             case ConstantKB.CALLBACK_NEXT_MOVE_BUTTON:
                 messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.warningKeyboard());
+                messageEdited.setReplyMarkup(Keyboard.warningKeyboard());
                 break;
 
             case ConstantKB.CALLBACK_UPBUILD_BUILD_BUTTON:
                 messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.upbuildBuildsKeyboard());
+                messageEdited.setReplyMarkup(Keyboard.upbuildBuildsKeyboard());
                 break;
 
             case ConstantKB.CALLBACK_UPGRADE_BUILD_BUTTON:
                 messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.upgradeBuildsKeyboard());
+                messageEdited.setReplyMarkup(Keyboard.upgradeBuildsKeyboard());
                 break;
             case ConstantKB.CALLBACK_ARMY_BUTTON:
                 messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.armyKeyboard());
+                messageEdited.setReplyMarkup(Keyboard.armyKeyboard());
                 break;
             case ConstantKB.CALLBACK_RECRUITING_BUTTON:
                 messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.recruitingKeyboard());
+                messageEdited.setReplyMarkup(Keyboard.recruitingKeyboard());
                 break;
             case ConstantKB.CALLBACK_ATTACK_BUTTON:
                 messageEdited.setText(text);
-                messageEdited.setReplyMarkup(keyboard.attackKeyboard());
+                messageEdited.setReplyMarkup(Keyboard.attackKeyboard());
                 break;
         }
         return messageEdited;
@@ -71,7 +65,7 @@ public class EditMessage {
         messageEdited.setText(messageText);
         messageEdited.setMessageId(messageID);
         messageEdited.setChatId(chatID);
-        messageEdited.setReplyMarkup(keyboard.warningKeyboard());
+        messageEdited.setReplyMarkup(Keyboard.warningKeyboard());
         return messageEdited;
     }
 }

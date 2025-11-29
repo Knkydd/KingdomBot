@@ -6,6 +6,7 @@ import TelegramBot.utility.ConstantMessages;
 import TelegramBot.utility.EditMessage;
 import TelegramBot.utility.MessageSender;
 import TelegramBot.utility.keyboard.ConstantKB;
+import TelegramBot.utility.keyboard.Keyboard;
 
 public class MainMenu {
     private final BotUtils botUtils;
@@ -37,7 +38,7 @@ public class MainMenu {
             userStateRepository.removeAll(chatID);
             userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
         }
-        botUtils.getMessageSender().send(chatID, botUtils.getKeyboard().startKeyboardMessage(chatID));
+        botUtils.getMessageSender().send(chatID, Keyboard.startKeyboardMessage(chatID));
     }
 
     public void mainMenuHandler(long chatID, String callbackData, Integer messageID) {

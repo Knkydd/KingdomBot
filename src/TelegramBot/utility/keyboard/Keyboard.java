@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 public class Keyboard {
-    public SendMessage startKeyboardMessage(long chatID) {
+    public static SendMessage startKeyboardMessage(long chatID) {
         SendMessage message = new SendMessage();
         message.setChatId(chatID);
         message.setText(ConstantMessages.START_MESSAGE);
@@ -15,47 +15,47 @@ public class Keyboard {
         return message;
     }
 
-    public InlineKeyboardMarkup startKeyboard() {
+    public static InlineKeyboardMarkup startKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.startButtons, 1);
     }
 
-    public InlineKeyboardMarkup gameKeyboard() {
+    public static InlineKeyboardMarkup gameKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.gameButtons, 2);
     }
 
-    public InlineKeyboardMarkup actionKeyboard() {
+    public static InlineKeyboardMarkup actionKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.actionsButtons, 3);
     }
 
-    public InlineKeyboardMarkup warningKeyboard() {
+    public static InlineKeyboardMarkup warningKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.oneBackButton, 1);
     }
 
-    public InlineKeyboardMarkup leaderboardKeyboard() {
+    public static InlineKeyboardMarkup leaderboardKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.oneBackButton, 1);
     }
 
-    public InlineKeyboardMarkup buildsKeyboard() {
+    public static InlineKeyboardMarkup buildsKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.buildMenuButtons, 2);
     }
 
-    public InlineKeyboardMarkup upgradeBuildsKeyboard() {
+    public static InlineKeyboardMarkup upgradeBuildsKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.upgradeButtons, 3);
     }
 
-    public InlineKeyboardMarkup upbuildBuildsKeyboard() {
+    public static InlineKeyboardMarkup upbuildBuildsKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.upbuildButtons, 3);
     }
 
-    public InlineKeyboardMarkup armyKeyboard() {
+    public static InlineKeyboardMarkup armyKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.armyButtons, 2);
     }
 
-    public InlineKeyboardMarkup recruitingKeyboard() {
+    public static InlineKeyboardMarkup recruitingKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.recruitingButtons, 3);
     }
 
-    public InlineKeyboardMarkup attackKeyboard() {
+    public static InlineKeyboardMarkup attackKeyboard() {
         return KeyboardBuilder.createKeyboard(ButtonsMaps.attackButtons, 1);
     }
 }

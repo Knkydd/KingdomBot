@@ -22,7 +22,6 @@ public class KingdomBot extends TelegramLongPollingBot {
 
     public void onUpdateReceived(Update update) {
         try {
-            System.out.println("заходит в onUpdateReceived");
             botController.updateReceived(update);
         } catch (Exception e) {
             throw new RuntimeException(e);

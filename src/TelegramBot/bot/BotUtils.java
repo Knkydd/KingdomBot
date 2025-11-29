@@ -9,12 +9,11 @@ import TelegramBot.utility.keyboard.Keyboard;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 public class BotUtils {
-    private static BotUtils instance;
+    private static volatile BotUtils instance;
     private final DatabaseTools databaseTools;
     private final MessageSender messageSender;
     private final UserStateRepository userStateRepository;
     private final EditMessage editMessage;
-    private final Keyboard keyboard;
     private final Commands commands;
 
     private BotUtils(TelegramLongPollingBot bot) {
@@ -23,7 +22,6 @@ public class BotUtils {
         databaseTools = dbConnection.getDatabaseTools();
         userStateRepository = new UserStateRepository();
         editMessage = new EditMessage();
-        keyboard = new Keyboard();
         commands = new Commands(this);
     }
 
@@ -39,10 +37,6 @@ public class BotUtils {
 
     public DatabaseTools getDatabaseTools() {
         return databaseTools;
-    }
-
-    public Keyboard getKeyboard() {
-        return keyboard;
     }
 
     public EditMessage getEditMessage() {

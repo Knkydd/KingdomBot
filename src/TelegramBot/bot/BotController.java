@@ -51,7 +51,6 @@ public class BotController {
             callbackData = userStateRepository.getState(chatID);
         }
         try {
-            userStateRepository.gt();
             BiConsumer<Long, Integer> command = commands.getCommand(callbackData);
             command.accept(chatID, messageID);
         } catch (Exception e) {
