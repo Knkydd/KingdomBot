@@ -6,9 +6,7 @@ public class UserStateRepository {
     private final static Map<Long, List<String>> userStates = new HashMap<>();
 
     public boolean isEmpty(){
-        if(userStates.isEmpty())
-            return true;
-        return false;
+        return userStates.isEmpty();
     }
 
     public void removeAll(long chatID){
@@ -17,10 +15,6 @@ public class UserStateRepository {
 
     public void setState(long chatID, String newState) {
         userStates.computeIfAbsent(chatID, k -> new ArrayList<>()).add(newState);
-    }
-
-    public void gt(){
-        System.out.println(userStates);
     }
 
     public String getState(long chatID){

@@ -1,5 +1,6 @@
 package telegrambot.bot;
 
+import lombok.extern.slf4j.Slf4j;
 import telegrambot.bot.logic.*;
 import telegrambot.data.ConstantDB;
 import telegrambot.utility.ConstantBuildUp;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+@Slf4j
 public class Commands {
     private final Map<String, BiConsumer<Long, Integer>> commandsMap;
     private final NextMove nextMoveControl;
@@ -121,6 +123,7 @@ public class Commands {
         commandsMap.put(ConstantBuildUp.CHURCH_UPGRADE, (chatID, messageID) ->
                 buildsMenuControl.buildsHandlerUpgrade(chatID, ConstantBuildUp.CHURCH_UPGRADE, messageID));
 
+        log.info("Commands created successful");
     }
 
     public BiConsumer<Long, Integer> getCommand(String command) {

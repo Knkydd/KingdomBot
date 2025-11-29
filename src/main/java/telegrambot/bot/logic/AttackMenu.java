@@ -26,27 +26,23 @@ public class AttackMenu {
             return ConstantMessages.FINAL_BATTLE_MESSAGE;
         }
 
-        return new StringBuilder()
-                .append("Уровень:   ").append(currentLevel).append("\n\n")
-                .append("Для того, чтобы атаковать, вам нужно ")
-                .append(ConstantAttackMenu.ATTACK_LEVELS.get(currentLevel))
-                .append(" мощи армии\n\n")
-                .append("На данный момент мощь вашей армии составляет: ")
-                .append(armyPower).append("\n")
-                .toString();
+        return "Уровень:   " + currentLevel + "\n\n" +
+                "Для того, чтобы атаковать, вам нужно " +
+                ConstantAttackMenu.ATTACK_LEVELS.get(currentLevel) +
+                " мощи армии\n\n" +
+                "На данный момент мощь вашей армии составляет: " +
+                armyPower + "\n";
     }
 
     private String createRewardsMessage(Integer currentLevel) {
         Map<String, Integer> rewards = ConstantReward.REWARD_FOR_VICTORY_ATTACK.get(currentLevel);
 
-        return new StringBuilder()
-                .append("В награду за победу вы получаете ")
-                .append(rewards.get("Wood")).append(" дерева, ")
-                .append(rewards.get("Gold")).append(" золота, ")
-                .append(rewards.get("Stone")).append(" камня и ")
-                .append(rewards.get("Food")).append(" еды\n")
-                .append("Они будут добавлены к вам на склад")
-                .toString();
+        return "В награду за победу вы получаете " +
+                rewards.get("Wood") + " дерева, " +
+                rewards.get("Gold") + " золота, " +
+                rewards.get("Stone") + " камня и " +
+                rewards.get("Food") + " еды\n" +
+                "Они будут добавлены к вам на склад";
     }
 
     public void attackMenuHandler(long chatID, String callbackData, Integer messageID) {

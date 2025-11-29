@@ -1,12 +1,14 @@
 package telegrambot.bot;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import telegrambot.data.DatabaseConnection;
 import telegrambot.data.DatabaseTools;
 import telegrambot.utility.MessageEditor;
 import telegrambot.utility.MessageSender;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
+@Slf4j
 public class BotUtils {
     private static volatile BotUtils instance;
     @Getter
@@ -27,6 +29,7 @@ public class BotUtils {
         userStateRepository = new UserStateRepository();
         messageEditor = new MessageEditor();
         commands = new Commands(this);
+        log.info("BotUtils created successful");
     }
 
     public static BotUtils getInstance(TelegramLongPollingBot bot) {

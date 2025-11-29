@@ -1,12 +1,17 @@
 package telegrambot.data;
 
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+@Slf4j
 public class DatabaseConnection {
     private Connection dbConnection;
+    @Getter
     private DatabaseTools databaseTools;
 
     public DatabaseConnection() {
@@ -14,7 +19,7 @@ public class DatabaseConnection {
             dbConnection = getDbConnection();
             databaseTools = new DatabaseTools(dbConnection);
         } catch (ClassNotFoundException | SQLException | ClassCastException e) {
-            e.printStackTrace();
+            log.error("Error with DatabaseConnection. Exception: {}", e.getMessage());
         }
     }
 
@@ -26,9 +31,5 @@ public class DatabaseConnection {
         String password = (String) dbConfig.get("password");
         dbConnection = DriverManager.getConnection(connection, user, password);
         return dbConnection;
-    }
-
-    public DatabaseTools getDatabaseTools() {
-        return databaseTools;
     }
 }

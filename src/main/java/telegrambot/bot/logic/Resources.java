@@ -17,9 +17,7 @@ public class Resources {
 
     public static boolean checkResourcesOnSpending(Map<String, Integer> resources, Map<String, Integer> expendedResources) {
         Set<String> resourcesKeys = resources.keySet();
-        Iterator iterator = resourcesKeys.iterator();
-        while (iterator.hasNext()) {
-            Object temp = iterator.next();
+        for (Object temp : resourcesKeys) {
             if (resources.get(temp) < expendedResources.get(temp)) {
                 return false;
             }
@@ -30,16 +28,16 @@ public class Resources {
     public static Map<String, Integer> updateResources(Map<String, Integer> resources, Map<String, Integer> expendedResources, Integer flagUpdate) {
         Map<String, Integer> updatedResources = new HashMap<>();
         Set<String> resourcesKeys = resources.keySet();
-        Iterator iterator = resourcesKeys.iterator();
+        Iterator<String> iterator = resourcesKeys.iterator();
         if (flagUpdate.equals(0)) {
             while (iterator.hasNext()) {
-                String temp = (String) iterator.next();
+                String temp = iterator.next();
                 Integer value = resources.get(temp) - expendedResources.get(temp);
                 updatedResources.put(temp, value);
             }
         } else {
             while (iterator.hasNext()) {
-                String temp = (String) iterator.next();
+                String temp = iterator.next();
                 Integer value = resources.get(temp) + expendedResources.get(temp);
                 updatedResources.put(temp, value);
             }
