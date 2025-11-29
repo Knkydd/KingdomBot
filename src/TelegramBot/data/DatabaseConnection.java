@@ -3,7 +3,7 @@ package TelegramBot.data;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DatabaseConnection {
     private Connection dbConnection;
@@ -13,16 +13,18 @@ public class DatabaseConnection {
         try {
             dbConnection = getDbConnection();
             databaseTools = new DatabaseTools(dbConnection);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException | SQLException | ClassCastException e) {
             e.printStackTrace();
         }
     }
 
-    private Connection getDbConnection() throws ClassNotFoundException, SQLException {
-        ArrayList<String> dbConfig = DatabaseConfigReader.read();
-        String connection = "jdbc:postgresql://" + dbConfig.get(0) + ":" + dbConfig.get(1) + "/" + dbConfig.get(2);
+    private Connection getDbConnection() throws ClassNotFoundException, SQLException, ClassCastException {
+        HashMap<String, Object> dbConfig = DatabaseConfigReader.readingConfigDB();
+        String connection = "jdbc:postgresql://" + dbConfig.get("host") + ":" + dbConfig.get("port") + "/" + dbConfig.get("name_db");
         Class.forName("org.postgresql.Driver");
-        dbConnection = DriverManager.getConnection(connection, dbConfig.get(3), dbConfig.get(4));
+        String user = (String) dbConfig.get("user");
+        String password = (String) dbConfig.get("password");
+        dbConnection = DriverManager.getConnection(connection, user, password);
         return dbConnection;
     }
 

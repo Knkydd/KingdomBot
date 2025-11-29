@@ -1,0 +1,70 @@
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <annotationProcessing>\r\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\r\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\r\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\r\n        <outputRelativeToContentRoot value=\"true\" />\r\n        <module name=\"KingdomBot\" />\r\n      </profile>\r\n    </annotationProcessing>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision 64aee178efa6ba35d8e9b0bd7a3aebdef0bf2ba7)
++++ b/.idea/compiler.xml	(date 1754395119278)
+@@ -6,6 +6,15 @@
+         <sourceOutputDir name="target/generated-sources/annotations" />
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+         <outputRelativeToContentRoot value="true" />
++      </profile>
++      <profile name="Annotation profile for KingdomBot" enabled="true">
++        <sourceOutputDir name="target/generated-sources/annotations" />
++        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
++        <outputRelativeToContentRoot value="true" />
++        <processorPath useClasspath="false">
++          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.20/lombok-1.18.20.jar" />
++          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.20/lombok-1.18.20.jar" />
++        </processorPath>
+         <module name="KingdomBot" />
+       </profile>
+     </annotationProcessing>
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><project xmlns=\"http://maven.apache.org/POM/4.0.0\"\r\n         xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\r\n         xsi:schemaLocation=\"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd\">\r\n    <modelVersion>4.0.0</modelVersion>\r\n\r\n    <groupId>com.yourgroup</groupId>\r\n    <artifactId>KingdomBot</artifactId>\r\n    <version>1.0-SNAPSHOT</version>\r\n\r\n    <properties>\r\n        <maven.compiler.source>17</maven.compiler.source>\r\n        <maven.compiler.target>17</maven.compiler.target>\r\n    </properties>\r\n\r\n    <dependencies>\r\n        <dependency>\r\n            <groupId>com.github.pengrad</groupId>\r\n            <artifactId>java-telegram-bot-api</artifactId>\r\n            <version>7.9.1</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.telegram</groupId>\r\n            <artifactId>telegrambots</artifactId>\r\n            <version>6.5.0</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.slf4j</groupId>\r\n            <artifactId>slf4j-api</artifactId>\r\n            <version>2.0.17</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>ch.qos.logback</groupId>\r\n            <artifactId>logback-classic</artifactId>\r\n            <version>1.2.3</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>com.googlecode.json-simple</groupId>\r\n            <artifactId>json-simple</artifactId>\r\n            <version>1.1.1</version>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.junit.jupiter</groupId>\r\n            <artifactId>junit-jupiter-api</artifactId>\r\n            <version>5.10.0</version>\r\n            <scope>test</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.junit.jupiter</groupId>\r\n            <artifactId>junit-jupiter-engine</artifactId>\r\n            <version>5.10.0</version>\r\n            <scope>test</scope>\r\n        </dependency>\r\n        <dependency>\r\n            <groupId>org.postgresql</groupId>\r\n            <artifactId>postgresql</artifactId>\r\n            <version>42.7.7</version>\r\n        </dependency>\r\n    </dependencies>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/pom.xml b/pom.xml
+--- a/pom.xml	(revision 64aee178efa6ba35d8e9b0bd7a3aebdef0bf2ba7)
++++ b/pom.xml	(date 1754395118868)
+@@ -55,5 +55,32 @@
+             <artifactId>postgresql</artifactId>
+             <version>42.7.7</version>
+         </dependency>
++        <dependency>
++            <groupId>org.projectlombok</groupId>
++            <artifactId>lombok</artifactId>
++            <version>1.18.20</version>
++            <scope>provided</scope>
++        </dependency>
+     </dependencies>
++    <build>
++        <plugins>
++            <plugin>
++                <groupId>org.apache.maven.plugins</groupId>
++                <artifactId>maven-compiler-plugin</artifactId>
++                <version>3.5.1</version>
++                <configuration>
++                    <source>17</source>
++                    <target>17</target>
++                    <annotationProcessorPaths>
++                        <path>
++                            <groupId>org.projectlombok</groupId>
++                            <artifactId>lombok</artifactId>
++                            <version>1.18.20</version>
++                        </path>
++                    </annotationProcessorPaths>
++                </configuration>
++            </plugin>
++        </plugins>
++    </build>
++
+ </project>
+\ No newline at end of file

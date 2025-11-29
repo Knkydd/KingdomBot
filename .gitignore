@@ -4,8 +4,7 @@
 #Token
 /Token.txt
 #dbConfig
-/db_data.txt
+/db_data.json
 #More
-/src/TelegramBot/data/Config.java
 /target/
 

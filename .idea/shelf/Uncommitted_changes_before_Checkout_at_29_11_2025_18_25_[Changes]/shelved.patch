@@ -1,0 +1,16 @@
+Index: src/main/java/TelegramBot/bot/BotUtils.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package TelegramBot.bot;\r\n\r\nimport TelegramBot.bot.logic.UserStateRepository;\r\nimport TelegramBot.data.DatabaseConnection;\r\nimport TelegramBot.data.DatabaseTools;\r\nimport TelegramBot.utility.MessageEditor;\r\nimport TelegramBot.utility.MessageSender;\r\nimport TelegramBot.utility.keyboard.Keyboard;\r\nimport org.telegram.telegrambots.bots.TelegramLongPollingBot;\r\n\r\npublic class BotUtils {\r\n    private static BotUtils instance;\r\n    private final DatabaseTools databaseTools;\r\n    private final MessageSender messageSender;\r\n    private final UserStateRepository userStateRepository;\r\n    private final MessageEditor messageEditor;\r\n    private final Keyboard keyboard;\r\n    private final Commands commands;\r\n\r\n    private BotUtils(TelegramLongPollingBot bot) {\r\n        DatabaseConnection dbConnection = new DatabaseConnection();\r\n        messageSender = new MessageSender(bot);\r\n        databaseTools = dbConnection.getDatabaseTools();\r\n        userStateRepository = new UserStateRepository();\r\n        messageEditor = new MessageEditor();\r\n        keyboard = new Keyboard();\r\n        commands = new Commands(this);\r\n    }\r\n\r\n    public static BotUtils getInstance(TelegramLongPollingBot bot) {\r\n        if (instance == null) {\r\n            synchronized (BotUtils.class) {\r\n                if (instance == null)\r\n                    instance = new BotUtils(bot);\r\n            }\r\n        }\r\n        return instance;\r\n    }\r\n\r\n    public DatabaseTools getDatabaseTools() {\r\n        return databaseTools;\r\n    }\r\n\r\n    public Keyboard getKeyboard() {\r\n        return keyboard;\r\n    }\r\n\r\n    public MessageEditor getEditMessage() {\r\n        return messageEditor;\r\n    }\r\n\r\n    public MessageSender getMessageSender() {\r\n        return messageSender;\r\n    }\r\n\r\n    public UserStateRepository getUserStateRepository() {\r\n        return userStateRepository;\r\n    }\r\n\r\n    public Commands getCommands() {\r\n        return commands;\r\n    }\r\n}\r\n
+===================================================================
+diff --git a/src/main/java/TelegramBot/bot/BotUtils.java b/src/main/java/TelegramBot/bot/BotUtils.java
+--- a/src/main/java/TelegramBot/bot/BotUtils.java	(revision 64aee178efa6ba35d8e9b0bd7a3aebdef0bf2ba7)
++++ b/src/main/java/TelegramBot/bot/BotUtils.java	(date 1754395197632)
+@@ -6,6 +6,7 @@
+ import TelegramBot.utility.MessageEditor;
+ import TelegramBot.utility.MessageSender;
+ import TelegramBot.utility.keyboard.Keyboard;
++import lombok.extern.slf4j.Slf4j;
+ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+ 
+ public class BotUtils {
