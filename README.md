@@ -39,6 +39,7 @@
 - Язык: **Java 17+**
 - Telegram API: **telegram-bots-api**
 - База данных: **PostgreSQL**
+- Прочее: **Lombok**, **SLF4J & LOG4J**
 ---
 
 ##  Структура проекта
