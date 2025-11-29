@@ -12,7 +12,7 @@ public class DatabaseTools {
     public DatabaseTools(Connection dbConnection) {
         this.dbConnection = dbConnection;
     }
-    
+
     public void registrationUser(long chatID) {
         String insertRegistration = """
                 Begin;
@@ -35,7 +35,7 @@ public class DatabaseTools {
             log.error("Error! Failed registration user. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
     }
-    
+
     public boolean isUserRegistered(long chatID) {
         String insertRegister = "Select chatID from users where chatID=?";
         try (PreparedStatement statement = dbConnection.prepareStatement(insertRegister)) {
@@ -136,15 +136,16 @@ public class DatabaseTools {
     }
 
     public void setUserArmy(long chatID, String unit, Integer newCountUnit) {
-        String insertArmy = "Update army set ? = ? where chatID = ?";
-        try (PreparedStatement statement = dbConnection.prepareStatement(insertArmy)) {
-            statement.setString(1, unit);
-            statement.setInt(2, newCountUnit);
-            statement.setLong(3, chatID);
+        if (ConstantDB.accordanceListOfArmy.containsKey(unit)) {
+            String insertArmy = "Update army set " + unit + " = ? where chatID = ?";
+            try (PreparedStatement statement = dbConnection.prepareStatement(insertArmy)) {
+                statement.setInt(1, newCountUnit);
+                statement.setLong(2, chatID);
 
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("Error! Failed set user army. Exception: {}, ChatID: {}", e.getMessage(), chatID);
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                log.error("Error! Failed set user army. Exception: {}, ChatID: {}", e.getMessage(), chatID);
+            }
         }
     }
 
@@ -230,15 +231,16 @@ public class DatabaseTools {
     }
 
     public void setUserBuilds(long chatID, String build, Integer newBuildLevel) {
-        String insertBuild = "Update builds set ? = ? where chatID = ?";
-        try (PreparedStatement statement = dbConnection.prepareStatement(insertBuild)){
-            statement.setString(1,build);
-            statement.setInt(2, newBuildLevel);
-            statement.setLong(3, chatID);
+        if (ConstantDB.accordanceListOfBuilds.containsKey(build)) {
+            String insertBuild = "Update builds set " + build + " = ? where chatID = ?";
+            try (PreparedStatement statement = dbConnection.prepareStatement(insertBuild)) {
+                statement.setInt(1, newBuildLevel);
+                statement.setLong(2, chatID);
 
-            statement.executeUpdate();
-        } catch (SQLException e){
-            log.error("Error! Failed set user builds. Exception: {}, ChatID: {}", e.getMessage(), chatID);
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                log.error("Error! Failed set user builds. Exception: {}, ChatID: {}, Build: {}", e.getMessage(), chatID, build);
+            }
         }
     }
 }
