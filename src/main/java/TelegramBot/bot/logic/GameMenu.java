@@ -4,7 +4,7 @@ import TelegramBot.bot.BotUtils;
 import TelegramBot.bot.UserStateRepository;
 import TelegramBot.data.DatabaseTools;
 import TelegramBot.utility.ConstantMessages;
-import TelegramBot.utility.EditMessage;
+import TelegramBot.utility.MessageEditor;
 import TelegramBot.utility.MessageSender;
 import TelegramBot.utility.keyboard.ConstantKB;
 
@@ -14,13 +14,13 @@ public class GameMenu {
     private final DatabaseTools databaseTools;
     private final MessageSender messageSender;
     private final UserStateRepository userStateRepository;
-    private final EditMessage editMessage;
+    private final MessageEditor messageEditor;
 
     public GameMenu(BotUtils botUtils) {
         this.messageSender = botUtils.getMessageSender();
         this.databaseTools = botUtils.getDatabaseTools();
         this.userStateRepository = botUtils.getUserStateRepository();
-        this.editMessage = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getEditMessage();
     }
 
     public void gameMenuHandler(long chatID, String callbackData, Integer messageID) {
@@ -28,7 +28,7 @@ public class GameMenu {
             case ConstantKB.CALLBACK_ACTION_BUTTON:
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_ACTION_BUTTON);
                 messageSender.send(
-                        chatID, editMessage.messageEdit(
+                        chatID, messageEditor.messageEdit(
                                 chatID, messageID, callbackData, ConstantMessages.ACTIONS_MESSAGE));
                 break;
 
@@ -37,7 +37,7 @@ public class GameMenu {
                 userStateRepository.setState(
                         chatID, ConstantKB.CALLBACK_BUILDS_BUTTON);
                 messageSender.send(
-                        chatID, editMessage.messageEdit(
+                        chatID, messageEditor.messageEdit(
                                 chatID, messageID, callbackData, Builds.createBuildsMessage(builds)));
                 break;
             case ConstantKB.CALLBACK_ARMY_BUTTON:
@@ -46,7 +46,7 @@ public class GameMenu {
                 userStateRepository.setState(
                         chatID, ConstantKB.CALLBACK_ARMY_BUTTON);
                 messageSender.send(
-                        chatID, editMessage.messageEdit(
+                        chatID, messageEditor.messageEdit(
                                 chatID, messageID, callbackData, Army.createArmyMessage(army, armyPower)));
                 break;
         }

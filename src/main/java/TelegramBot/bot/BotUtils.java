@@ -2,7 +2,7 @@ package TelegramBot.bot;
 
 import TelegramBot.data.DatabaseConnection;
 import TelegramBot.data.DatabaseTools;
-import TelegramBot.utility.EditMessage;
+import TelegramBot.utility.MessageEditor;
 import TelegramBot.utility.MessageSender;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
@@ -11,7 +11,7 @@ public class BotUtils {
     private final DatabaseTools databaseTools;
     private final MessageSender messageSender;
     private final UserStateRepository userStateRepository;
-    private final EditMessage editMessage;
+    private final MessageEditor messageEditor;
     private final Commands commands;
 
     private BotUtils(TelegramLongPollingBot bot) {
@@ -19,7 +19,7 @@ public class BotUtils {
         messageSender = new MessageSender(bot);
         databaseTools = dbConnection.getDatabaseTools();
         userStateRepository = new UserStateRepository();
-        editMessage = new EditMessage();
+        messageEditor = new MessageEditor();
         commands = new Commands(this);
     }
 
@@ -37,8 +37,8 @@ public class BotUtils {
         return databaseTools;
     }
 
-    public EditMessage getEditMessage() {
-        return editMessage;
+    public MessageEditor getEditMessage() {
+        return messageEditor;
     }
 
     public MessageSender getMessageSender() {

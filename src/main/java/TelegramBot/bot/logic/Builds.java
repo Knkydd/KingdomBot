@@ -6,7 +6,7 @@ import TelegramBot.data.ConstantDB;
 import TelegramBot.data.DatabaseTools;
 import TelegramBot.utility.ConstantMessages;
 import TelegramBot.utility.ConstantResourcesForBuilds;
-import TelegramBot.utility.EditMessage;
+import TelegramBot.utility.MessageEditor;
 import TelegramBot.utility.MessageSender;
 import TelegramBot.utility.keyboard.ConstantKB;
 
@@ -16,13 +16,13 @@ public class Builds {
     private final DatabaseTools databaseTools;
     private final MessageSender messageSender;
     private final UserStateRepository userStateRepository;
-    private final EditMessage editMessage;
+    private final MessageEditor messageEditor;
 
     public Builds(BotUtils botUtils) {
         this.messageSender = botUtils.getMessageSender();
         this.databaseTools = botUtils.getDatabaseTools();
         this.userStateRepository = botUtils.getUserStateRepository();
-        this.editMessage = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getEditMessage();
     }
     
     public static String createBuildsMessage(Map<String, Integer> builds) {
@@ -134,14 +134,14 @@ public class Builds {
             case ConstantKB.CALLBACK_UPBUILD_BUILD_BUTTON:
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_UPBUILD_BUILD_BUTTON);
                 messageSender.send(
-                        chatID, editMessage.messageEdit(
+                        chatID, messageEditor.messageEdit(
                                 chatID, messageID, callbackData, createConstructBuildsMessage(resources, builds)));
                 break;
 
             case ConstantKB.CALLBACK_UPGRADE_BUILD_BUTTON:
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_UPGRADE_BUILD_BUTTON);
                 messageSender.send(
-                        chatID, editMessage.messageEdit(
+                        chatID, messageEditor.messageEdit(
                                 chatID, messageID, callbackData, createUpgradeBuildsMessage(resources, builds)));
                 break;
         }
@@ -165,20 +165,20 @@ public class Builds {
                 databaseTools.setUserBuilds(
                         chatID, callbackData, 1);
                 messageSender.send(
-                        chatID, editMessage.warningMessage(
+                        chatID, messageEditor.warningMessage(
                                 chatID, messageID, ConstantMessages.BUILD_SUCCESSFUL));
 
             } else {
 
                 messageSender.send(
-                        chatID, editMessage.warningMessage(
+                        chatID, messageEditor.warningMessage(
                                 chatID, messageID, ConstantMessages.BUILD_FAILED_RESOURCES));
             }
 
         } else {
 
             messageSender.send(
-                    chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.BUILD_FAILED));
+                    chatID, messageEditor.warningMessage(chatID, messageID, ConstantMessages.BUILD_FAILED));
 
         }
     }
@@ -206,26 +206,26 @@ public class Builds {
                     databaseTools.setUserResources(chatID, updatedResources);
                     databaseTools.setUserBuilds(chatID, callbackData, builds.get(callbackData) + 1);
                     messageSender.send(chatID,
-                            editMessage.warningMessage(
+                            messageEditor.warningMessage(
                                     chatID, messageID, ConstantMessages.UPGRADE_BUILD_SUCCESSFUL));
 
                 } else {
 
                     messageSender.send(
-                            chatID, editMessage.warningMessage(
+                            chatID, messageEditor.warningMessage(
                                     chatID, messageID, ConstantMessages.UPGRADE_BUILD_FAILED_RESOURCES));
 
                 }
             } else {
 
                 messageSender.send(
-                        chatID, editMessage.warningMessage(
+                        chatID, messageEditor.warningMessage(
                                 chatID, messageID, ConstantMessages.UPGRADE_BUILD_FAILED));
 
             }
         } else {
             messageSender.send(
-                    chatID, editMessage.warningMessage(
+                    chatID, messageEditor.warningMessage(
                             chatID, messageID, ConstantMessages.BUILD_NOT_BUILT_MESSAGE));
         }
     }

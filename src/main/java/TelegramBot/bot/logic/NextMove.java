@@ -5,7 +5,7 @@ import TelegramBot.bot.UserStateRepository;
 import TelegramBot.data.ConstantDB;
 import TelegramBot.data.DatabaseTools;
 import TelegramBot.utility.ConstantMessages;
-import TelegramBot.utility.EditMessage;
+import TelegramBot.utility.MessageEditor;
 import TelegramBot.utility.MessageSender;
 import TelegramBot.utility.keyboard.ConstantKB;
 
@@ -19,13 +19,13 @@ public class NextMove {
     private Integer stoneResourceUpdate = 0;
     private DatabaseTools databaseTools;
     private MessageSender messageSender;
-    private EditMessage editMessage;
+    private MessageEditor messageEditor;
     private UserStateRepository userStateRepository;
 
     public NextMove(BotUtils botUtils) {
         this.databaseTools = botUtils.getDatabaseTools();
         this.messageSender = botUtils.getMessageSender();
-        this.editMessage = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getEditMessage();
         this.userStateRepository = botUtils.getUserStateRepository();
     }
 
@@ -121,23 +121,23 @@ public class NextMove {
         switch (callbackData) {
             case ConstantKB.CALLBACK_NEXT_MOVE_BUTTON:
                 updateResources(chatID);
-                messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.NEXT_MOVE_MESSAGE));
+                messageSender.send(chatID, messageEditor.warningMessage(chatID, messageID, ConstantMessages.NEXT_MOVE_MESSAGE));
                 break;
             case ConstantKB.CALLBACK_MOVE_CHOP:
                 updateResourcesPlusWood(chatID);
-                messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.MOVE_CHOP_MESSAGE));
+                messageSender.send(chatID, messageEditor.warningMessage(chatID, messageID, ConstantMessages.MOVE_CHOP_MESSAGE));
                 break;
             case ConstantKB.CALLBACK_MOVE_DIG:
                 updateResourcesPlusStone(chatID);
-                messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.MOVE_DIG_MESSAGE));
+                messageSender.send(chatID, messageEditor.warningMessage(chatID, messageID, ConstantMessages.MOVE_DIG_MESSAGE));
                 break;
             case ConstantKB.CALLBACK_MOVE_TRADE:
                 updateResourcesPlusGold(chatID);
-                messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.MOVE_TRADE_MESSAGE));
+                messageSender.send(chatID, messageEditor.warningMessage(chatID, messageID, ConstantMessages.MOVE_TRADE_MESSAGE));
                 break;
             case ConstantKB.CALLBACK_MOVE_WORK_ON_FARM:
                 updateResourcesPlusFood(chatID);
-                messageSender.send(chatID, editMessage.warningMessage(chatID, messageID, ConstantMessages.MOVE_WORK_ON_FARM_MESSAGE));
+                messageSender.send(chatID, messageEditor.warningMessage(chatID, messageID, ConstantMessages.MOVE_WORK_ON_FARM_MESSAGE));
                 break;
         }
     }

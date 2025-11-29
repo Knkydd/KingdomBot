@@ -6,7 +6,7 @@ import TelegramBot.data.ConstantDB;
 import TelegramBot.data.DatabaseTools;
 import TelegramBot.utility.ConstantMessages;
 import TelegramBot.utility.ConstantResourcesForArmy;
-import TelegramBot.utility.EditMessage;
+import TelegramBot.utility.MessageEditor;
 import TelegramBot.utility.MessageSender;
 import TelegramBot.utility.keyboard.ConstantKB;
 
@@ -16,13 +16,13 @@ public class Army {
     private final DatabaseTools databaseTools;
     private final MessageSender messageSender;
     private final UserStateRepository userStateRepository;
-    private final EditMessage editMessage;
+    private final MessageEditor messageEditor;
 
     public Army(BotUtils botUtils) {
         this.databaseTools = botUtils.getDatabaseTools();
         this.messageSender = botUtils.getMessageSender();
         this.userStateRepository = botUtils.getUserStateRepository();
-        this.editMessage = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getEditMessage();
     }
 
     /*
@@ -91,9 +91,12 @@ public class Army {
     }
 
     public void armyRecruitingHandler(long chatID, String callbackData, Integer messageID) {
-
         userStateRepository.setState(chatID, ConstantKB.CALLBACK_RECRUITING_BUTTON);
-        messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, createRecruitingMessage(databaseTools.getUserArmy(chatID), databaseTools.getUserResources(chatID).get(ConstantDB.USER_GOLD))));
+
+        var army = databaseTools.getUserArmy(chatID);
+        var resources = databaseTools.getUserResources(chatID).get(ConstantDB.USER_GOLD);
+        String message = createRecruitingMessage(army, resources);
+        messageSender.send(chatID, messageEditor.messageEdit(chatID, messageID, callbackData, message));
 
     }
 
@@ -143,18 +146,18 @@ public class Army {
                         resources, ConstantResourcesForArmy.LIST_GOLD_FOR_ARMY.get(
                                 callbackData), 0));
                 databaseTools.setUserArmy(chatID, callbackData, army.get(callbackData) + 1);
-                messageSender.send(chatID, editMessage.warningMessage(
+                messageSender.send(chatID, messageEditor.warningMessage(
                         chatID, messageID, ConstantMessages.RECRUITING_UNIT_SUCCESSFUL));
                 databaseTools.setUserArmyPower(chatID, calculatingArmyPower);
 
             } else {
 
-                messageSender.send(chatID, editMessage.warningMessage(
+                messageSender.send(chatID, messageEditor.warningMessage(
                         chatID, messageID, ConstantMessages.RECRUITING_UNIT_FAILED));
 
             }
         } else {
-            messageSender.send(chatID, editMessage.warningMessage(
+            messageSender.send(chatID, messageEditor.warningMessage(
                     chatID, messageID, ConstantMessages.UNIT_BUILD_NOT_BUILT));
         }
     }

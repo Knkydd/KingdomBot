@@ -4,7 +4,7 @@ import TelegramBot.bot.BotUtils;
 import TelegramBot.bot.UserStateRepository;
 import TelegramBot.data.DatabaseTools;
 import TelegramBot.utility.ConstantMessages;
-import TelegramBot.utility.EditMessage;
+import TelegramBot.utility.MessageEditor;
 import TelegramBot.utility.MessageSender;
 import TelegramBot.utility.keyboard.ConstantKB;
 import TelegramBot.utility.keyboard.Keyboard;
@@ -14,18 +14,18 @@ public class MainMenu {
     private final DatabaseTools databaseTools;
     private final MessageSender messageSender;
     private final UserStateRepository userStateRepository;
-    private final EditMessage editMessage;
+    private final MessageEditor messageEditor;
 
     public MainMenu(BotUtils botUtils) {
         this.botUtils = botUtils;
         databaseTools = botUtils.getDatabaseTools();
         messageSender = botUtils.getMessageSender();
         userStateRepository = botUtils.getUserStateRepository();
-        editMessage = botUtils.getEditMessage();
+        messageEditor = botUtils.getEditMessage();
     }
 
     public void setMainMenuInMSG(long chatID, Integer messageID) {
-        messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, ConstantKB.MAIN_MENU, ConstantMessages.START_MESSAGE));
+        messageSender.send(chatID, messageEditor.messageEdit(chatID, messageID, ConstantKB.MAIN_MENU, ConstantMessages.START_MESSAGE));
         userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
     }
 
@@ -48,13 +48,13 @@ public class MainMenu {
 
             case ConstantKB.MAIN_MENU:
 
-                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, ConstantMessages.START_MESSAGE));
+                messageSender.send(chatID, messageEditor.messageEdit(chatID, messageID, callbackData, ConstantMessages.START_MESSAGE));
                 userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
                 break;
 
             case ConstantKB.CALLBACK_PLAY_BUTTON:
 
-                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, ConstantMessages.GAME_MESSAGE + Resources.createResourceMessage(databaseTools.getUserResources(chatID))));
+                messageSender.send(chatID, messageEditor.messageEdit(chatID, messageID, callbackData, ConstantMessages.GAME_MESSAGE + Resources.createResourceMessage(databaseTools.getUserResources(chatID))));
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_PLAY_BUTTON);
 
                 break;

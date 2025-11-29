@@ -12,12 +12,12 @@ public class AttackMenu {
     private final DatabaseTools databaseTools;
     private final MessageSender messageSender;
     private final UserStateRepository userStateRepository;
-    private final EditMessage editMessage;
+    private final MessageEditor messageEditor;
 
     public AttackMenu(BotUtils botUtils) {
         this.databaseTools = botUtils.getDatabaseTools();
         this.messageSender = botUtils.getMessageSender();
-        this.editMessage = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getEditMessage();
         this.userStateRepository = botUtils.getUserStateRepository();
     }
 
@@ -57,7 +57,7 @@ public class AttackMenu {
             case ConstantKB.CALLBACK_ATTACK_BUTTON:
 
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_ATTACK_BUTTON);
-                messageSender.send(chatID, editMessage.messageEdit(
+                messageSender.send(chatID, messageEditor.messageEdit(
                         chatID, messageID, ConstantKB.CALLBACK_ATTACK_BUTTON,
                         createAttackMessage(armyPower, currentLevel)));
 
@@ -69,13 +69,13 @@ public class AttackMenu {
                     databaseTools.setUserResources(chatID, Resources.updateResources(
                             resources, ConstantReward.REWARD_FOR_VICTORY_ATTACK.get(
                                     currentLevel), 1));
-                    messageSender.send(chatID, editMessage.warningMessage(
+                    messageSender.send(chatID, messageEditor.warningMessage(
                             chatID, messageID,
                             ConstantMessages.ATTACK_ENEMY_SUCCESSFUL + createRewardsMessage(currentLevel)));
                     databaseTools.setUserLevelAttack(chatID, currentLevel + 1);
 
                 } else {
-                    messageSender.send(chatID, editMessage.warningMessage(
+                    messageSender.send(chatID, messageEditor.warningMessage(
                             chatID, messageID, ConstantMessages.ATTACK_ENEMY_FAILED));
                 }
         }
