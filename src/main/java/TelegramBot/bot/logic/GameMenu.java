@@ -33,7 +33,7 @@ public class GameMenu {
                 break;
 
             case ConstantKB.CALLBACK_BUILDS_BUTTON:
-                Map<String, Integer> builds = databaseTools.getBuilds(chatID);
+                Map<String, Integer> builds = databaseTools.getUserBuilds(chatID);
                 userStateRepository.setState(
                         chatID, ConstantKB.CALLBACK_BUILDS_BUTTON);
                 messageSender.send(
@@ -41,8 +41,8 @@ public class GameMenu {
                                 chatID, messageID, callbackData, Builds.createBuildsMessage(builds)));
                 break;
             case ConstantKB.CALLBACK_ARMY_BUTTON:
-                Map<String, Integer> army = databaseTools.getArmy(chatID);
-                Integer armyPower = databaseTools.getArmyPower(chatID);
+                Map<String, Integer> army = databaseTools.getUserArmy(chatID);
+                Integer armyPower = databaseTools.getUserArmyPower(chatID);
                 userStateRepository.setState(
                         chatID, ConstantKB.CALLBACK_ARMY_BUTTON);
                 messageSender.send(

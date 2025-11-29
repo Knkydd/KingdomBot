@@ -30,7 +30,7 @@ public class MainMenu {
     }
 
     public void mainMenuStart(long chatID){
-        if(!databaseTools.isRegistered(chatID)){
+        if(!databaseTools.isUserRegistered(chatID)){
             databaseTools.registrationUser(chatID);
         }
         if (userStateRepository.isEmpty()) {
@@ -54,7 +54,7 @@ public class MainMenu {
 
             case ConstantKB.CALLBACK_PLAY_BUTTON:
 
-                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, ConstantMessages.GAME_MESSAGE + Resources.createResourceMessage(databaseTools.getResources(chatID))));
+                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, ConstantMessages.GAME_MESSAGE + Resources.createResourceMessage(databaseTools.getUserResources(chatID))));
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_PLAY_BUTTON);
 
                 break;

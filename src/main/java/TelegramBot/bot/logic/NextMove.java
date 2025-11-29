@@ -66,9 +66,9 @@ public class NextMove {
 
     public Map<String, Integer> calculatingResources(long chatID) {
         Map<String, Integer> resourcesUpdated = new HashMap<>();
-        Map<String, Integer> army = databaseTools.getArmy(chatID);
-        Map<String, Integer> builds = databaseTools.getBuilds(chatID);
-        Map<String, Integer> resources = databaseTools.getResources(chatID);
+        Map<String, Integer> army = databaseTools.getUserArmy(chatID);
+        Map<String, Integer> builds = databaseTools.getUserBuilds(chatID);
+        Map<String, Integer> resources = databaseTools.getUserResources(chatID);
 
         setGoldResourceUpdate(resources.get(ConstantDB.USER_GOLD), builds.get(ConstantDB.USER_TRADE_BUILD), builds.get(ConstantDB.USER_TOWN_HALL));
         setStoneResourceUpdate(resources.get(ConstantDB.USER_STONE), builds.get(ConstantDB.USER_QUARRY), builds.get(ConstantDB.USER_TOWN_HALL));
@@ -86,35 +86,35 @@ public class NextMove {
     public void updateResources(long chatID) {
         userStateRepository.setState(chatID, ConstantKB.CALLBACK_ACTION_BUTTON);
         Map<String, Integer> resourcesCalculated = calculatingResources(chatID);
-        databaseTools.setResources(chatID, resourcesCalculated);
+        databaseTools.setUserResources(chatID, resourcesCalculated);
     }
 
     public void updateResourcesPlusWood(long chatID) {
         userStateRepository.setState(chatID, ConstantKB.CALLBACK_ACTION_BUTTON);
         Map<String, Integer> resourcesCalculated = calculatingResources(chatID);
         resourcesCalculated.put(ConstantDB.USER_WOOD, resourcesCalculated.get(ConstantDB.USER_WOOD) + 15);
-        databaseTools.setResources(chatID, resourcesCalculated);
+        databaseTools.setUserResources(chatID, resourcesCalculated);
     }
 
     public void updateResourcesPlusGold(long chatID) {
         userStateRepository.setState(chatID, ConstantKB.CALLBACK_ACTION_BUTTON);
         Map<String, Integer> resourcesCalculated = calculatingResources(chatID);
         resourcesCalculated.put(ConstantDB.USER_GOLD, resourcesCalculated.get(ConstantDB.USER_GOLD) + 50);
-        databaseTools.setResources(chatID, resourcesCalculated);
+        databaseTools.setUserResources(chatID, resourcesCalculated);
     }
 
     public void updateResourcesPlusStone(long chatID) {
         userStateRepository.setState(chatID, ConstantKB.CALLBACK_ACTION_BUTTON);
         Map<String, Integer> resourcesCalculated = calculatingResources(chatID);
         resourcesCalculated.put(ConstantDB.USER_STONE, resourcesCalculated.get(ConstantDB.USER_STONE) + 10);
-        databaseTools.setResources(chatID, resourcesCalculated);
+        databaseTools.setUserResources(chatID, resourcesCalculated);
     }
 
     public void updateResourcesPlusFood(long chatID) {
         userStateRepository.setState(chatID, ConstantKB.CALLBACK_ACTION_BUTTON);
         Map<String, Integer> resourcesCalculated = calculatingResources(chatID);
         resourcesCalculated.put(ConstantDB.USER_FOOD, resourcesCalculated.get(ConstantDB.USER_FOOD) + 30);
-        databaseTools.setResources(chatID, resourcesCalculated);
+        databaseTools.setUserResources(chatID, resourcesCalculated);
     }
 
     public void nextMoveHandler(long chatID, String callbackData, Integer messageID) {

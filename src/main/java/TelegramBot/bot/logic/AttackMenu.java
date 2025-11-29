@@ -50,9 +50,9 @@ public class AttackMenu {
     }
 
     public void attackMenuHandler(long chatID, String callbackData, Integer messageID) {
-        Integer armyPower = databaseTools.getArmyPower(chatID);
-        Integer currentLevel = databaseTools.getCurrentAttackLevel(chatID);
-        Map<String, Integer> resources = databaseTools.getResources(chatID);
+        Integer armyPower = databaseTools.getUserArmyPower(chatID);
+        Integer currentLevel = databaseTools.getUserCurrentAttackLevel(chatID);
+        Map<String, Integer> resources = databaseTools.getUserResources(chatID);
         switch (callbackData) {
             case ConstantKB.CALLBACK_ATTACK_BUTTON:
 
@@ -66,13 +66,13 @@ public class AttackMenu {
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_ATTACK_ENEMY_BUTTON);
                 if (armyPower >= ConstantAttackMenu.ATTACK_LEVELS.get(currentLevel)) {
 
-                    databaseTools.setResources(chatID, Resources.updateResources(
+                    databaseTools.setUserResources(chatID, Resources.updateResources(
                             resources, ConstantReward.REWARD_FOR_VICTORY_ATTACK.get(
                                     currentLevel), 1));
                     messageSender.send(chatID, editMessage.warningMessage(
                             chatID, messageID,
                             ConstantMessages.ATTACK_ENEMY_SUCCESSFUL + createRewardsMessage(currentLevel)));
-                    databaseTools.setLevelAttack(chatID, currentLevel + 1);
+                    databaseTools.setUserLevelAttack(chatID, currentLevel + 1);
 
                 } else {
                     messageSender.send(chatID, editMessage.warningMessage(

@@ -93,7 +93,7 @@ public class Army {
     public void armyRecruitingHandler(long chatID, String callbackData, Integer messageID) {
 
         userStateRepository.setState(chatID, ConstantKB.CALLBACK_RECRUITING_BUTTON);
-        messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, createRecruitingMessage(databaseTools.getArmy(chatID), databaseTools.getResources(chatID).get(ConstantDB.USER_GOLD))));
+        messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, createRecruitingMessage(databaseTools.getUserArmy(chatID), databaseTools.getUserResources(chatID).get(ConstantDB.USER_GOLD))));
 
     }
 
@@ -129,9 +129,9 @@ public class Army {
     public void recruitingHandler(long chatID, String callbackData, Integer messageID) {
         userStateRepository.setState(chatID, ConstantKB.CALLBACK_ARMY_BUTTON);
 
-        Map<String, Integer> army = databaseTools.getArmy(chatID);
-        Map<String, Integer> resources = databaseTools.getResources(chatID);
-        Map<String, Integer> builds = databaseTools.getBuilds(chatID);
+        Map<String, Integer> army = databaseTools.getUserArmy(chatID);
+        Map<String, Integer> resources = databaseTools.getUserResources(chatID);
+        Map<String, Integer> builds = databaseTools.getUserBuilds(chatID);
 
         if (checkRecruitingArmyOnBuilds(builds, callbackData)) {
             if (Resources.checkResourcesOnSpending(
@@ -139,13 +139,13 @@ public class Army {
 
                 Map<String, Integer> calculatingArmy = recruitingArmy(army, callbackData);
                 Integer calculatingArmyPower = calculatingArmyPower(builds, calculatingArmy);
-                databaseTools.setResources(chatID, Resources.updateResources(
+                databaseTools.setUserResources(chatID, Resources.updateResources(
                         resources, ConstantResourcesForArmy.LIST_GOLD_FOR_ARMY.get(
                                 callbackData), 0));
-                databaseTools.setArmy(chatID, callbackData, army.get(callbackData) + 1);
+                databaseTools.setUserArmy(chatID, callbackData, army.get(callbackData) + 1);
                 messageSender.send(chatID, editMessage.warningMessage(
                         chatID, messageID, ConstantMessages.RECRUITING_UNIT_SUCCESSFUL));
-                databaseTools.setArmyPower(chatID, calculatingArmyPower);
+                databaseTools.setUserArmyPower(chatID, calculatingArmyPower);
 
             } else {
 

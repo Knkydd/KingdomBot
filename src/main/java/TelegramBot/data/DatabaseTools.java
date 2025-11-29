@@ -9,8 +9,7 @@ public class DatabaseTools {
     public DatabaseTools(Connection dbConnection) {
         this.dbConnection = dbConnection;
     }
-
-    //Регистрация пользователя
+    
     public void registrationUser(long chatID) {
         String insertRegistration = """
                 Begin;
@@ -33,9 +32,8 @@ public class DatabaseTools {
             e.printStackTrace();
         }
     }
-
-    //Проверка, зарегистрирован ли пользователь
-    public boolean isRegistered(long chatID) {
+    
+    public boolean isUserRegistered(long chatID) {
         String insertRegister = "Select chatID from users where chatID=?";
         try (PreparedStatement statement = dbConnection.prepareStatement(insertRegister)) {
 
@@ -50,15 +48,13 @@ public class DatabaseTools {
         return false;
     }
 
-    //Метод получения ресурсов
-    public Map<String, Integer> getResources(long chatID) {
+    public Map<String, Integer> getUserResources(long chatID) {
         String getterResources = "Select Food, Gold, Stone, Wood from resources where chatID=?";
-        HashMap<String, Integer> resources = new HashMap<>(4);
+        var resources = new HashMap<String, Integer>();
 
         try (PreparedStatement statement = dbConnection.prepareStatement(getterResources)) {
 
             statement.setLong(1, chatID);
-
             try (ResultSet result = statement.executeQuery()) {
                 if (result.next()) {
                     resources.put("Wood", result.getInt("Wood"));
@@ -74,8 +70,7 @@ public class DatabaseTools {
         return resources;
     }
 
-    //Метод обновления ресурсов
-    public void setResources(long chatID, Map<String, Integer> resources) {
+    public void setUserResources(long chatID, Map<String, Integer> resources) {
         String insertResources = """
                 Update resources Set Wood = ?, 
                 Gold = ?, 
@@ -116,10 +111,9 @@ public class DatabaseTools {
 //        return leaderboard;
 //    }
 
-    //Получение армии(количества воинов)
-    public Map<String, Integer> getArmy(long chatID) {
+    public Map<String, Integer> getUserArmy(long chatID) {
         String getterArmy = "Select * from army where chatID = ?";
-        HashMap<String, Integer> army = new HashMap<>();
+        var army = new HashMap<String, Integer>();
         try (PreparedStatement statement = dbConnection.prepareStatement(getterArmy)) {
             statement.setLong(1, chatID);
 
@@ -138,8 +132,7 @@ public class DatabaseTools {
         return army;
     }
 
-    //Передает изменения юнита
-    public void setArmy(long chatID, String unit, Integer newCountUnit) {
+    public void setUserArmy(long chatID, String unit, Integer newCountUnit) {
         String insertArmy = "Update army set ? = ? where chatID = ?";
         try (PreparedStatement statement = dbConnection.prepareStatement(insertArmy)) {
             statement.setString(1, unit);
@@ -152,8 +145,7 @@ public class DatabaseTools {
         }
     }
 
-    //Обновление силы армии
-    public void setArmyPower(long chatID, Integer armyPower) {
+    public void setUserArmyPower(long chatID, Integer armyPower) {
         String insertArmyPower = "Update army set armyPower = ? where chatID = ?";
         try (PreparedStatement statement = dbConnection.prepareStatement(insertArmyPower)) {
             statement.setInt(1, armyPower);
@@ -165,8 +157,7 @@ public class DatabaseTools {
         }
     }
 
-    //Получение силы армии
-    public Integer getArmyPower(long chatID) {
+    public Integer getUserArmyPower(long chatID) {
         String getterArmyPower = "Select armyPower from army where chatID = ?";
         try (PreparedStatement statement = dbConnection.prepareStatement(getterArmyPower)) {
             statement.setLong(1, chatID);
@@ -181,8 +172,7 @@ public class DatabaseTools {
         return -1;
     }
 
-    //Получение уровня атаки, на котором находится пользователь
-    public Integer getCurrentAttackLevel(long chatID) {
+    public Integer getUserCurrentAttackLevel(long chatID) {
         String getterAttackLevel = "Select attackLevel from users where chatID = ?";
         try (PreparedStatement statement = dbConnection.prepareStatement(getterAttackLevel)) {
             statement.setLong(1, chatID);
@@ -198,8 +188,7 @@ public class DatabaseTools {
         return 0;
     }
 
-    //Обновление уровня атаки, на котором находится пользователь
-    public void setLevelAttack(long chatID, Integer currentLevel) {
+    public void setUserLevelAttack(long chatID, Integer currentLevel) {
         String insertAttackLevel = "Update users set attackLevel = ? where chatID = ?";
         try (PreparedStatement statement = dbConnection.prepareStatement(insertAttackLevel)) {
             statement.setInt(1, currentLevel);
@@ -211,10 +200,9 @@ public class DatabaseTools {
         }
     }
 
-    //Получение уровней построек
-    public Map<String, Integer> getBuilds(long chatID) {
+    public Map<String, Integer> getUserBuilds(long chatID) {
         String getterBuilds = "Select * from builds where chatID = ?";
-        HashMap<String, Integer> builds = new HashMap<>();
+        var builds = new HashMap<String, Integer>();
         try (PreparedStatement statement = dbConnection.prepareStatement(getterBuilds)) {
             statement.setLong(1, chatID);
 
@@ -238,8 +226,7 @@ public class DatabaseTools {
         return builds;
     }
 
-    //Передает новый уровень здания
-    public void setBuilds(long chatID, String build, Integer newBuildLevel) {
+    public void setUserBuilds(long chatID, String build, Integer newBuildLevel) {
         String insertBuild = "Update builds set ? = ? where chatID = ?";
         try (PreparedStatement statement = dbConnection.prepareStatement(insertBuild)){
             statement.setString(1,build);
