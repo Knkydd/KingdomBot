@@ -1,5 +1,6 @@
 package telegrambot.bot;
 
+import lombok.Getter;
 import telegrambot.data.DatabaseConnection;
 import telegrambot.data.DatabaseTools;
 import telegrambot.utility.MessageEditor;
@@ -8,10 +9,15 @@ import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 public class BotUtils {
     private static volatile BotUtils instance;
+    @Getter
     private final DatabaseTools databaseTools;
+    @Getter
     private final MessageSender messageSender;
+    @Getter
     private final UserStateRepository userStateRepository;
+    @Getter
     private final MessageEditor messageEditor;
+    @Getter
     private final Commands commands;
 
     private BotUtils(TelegramLongPollingBot bot) {
@@ -31,25 +37,5 @@ public class BotUtils {
             }
         }
         return instance;
-    }
-
-    public DatabaseTools getDatabaseTools() {
-        return databaseTools;
-    }
-
-    public MessageEditor getEditMessage() {
-        return messageEditor;
-    }
-
-    public MessageSender getMessageSender() {
-        return messageSender;
-    }
-
-    public UserStateRepository getUserStateRepository() {
-        return userStateRepository;
-    }
-
-    public Commands getCommands() {
-        return commands;
     }
 }

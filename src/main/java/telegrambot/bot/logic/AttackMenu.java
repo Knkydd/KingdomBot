@@ -17,7 +17,7 @@ public class AttackMenu {
     public AttackMenu(BotUtils botUtils) {
         this.databaseTools = botUtils.getDatabaseTools();
         this.messageSender = botUtils.getMessageSender();
-        this.messageEditor = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getMessageEditor();
         this.userStateRepository = botUtils.getUserStateRepository();
     }
 

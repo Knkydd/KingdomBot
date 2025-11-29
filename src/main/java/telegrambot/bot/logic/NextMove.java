@@ -25,7 +25,7 @@ public class NextMove {
     public NextMove(BotUtils botUtils) {
         this.databaseTools = botUtils.getDatabaseTools();
         this.messageSender = botUtils.getMessageSender();
-        this.messageEditor = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getMessageEditor();
         this.userStateRepository = botUtils.getUserStateRepository();
     }
 

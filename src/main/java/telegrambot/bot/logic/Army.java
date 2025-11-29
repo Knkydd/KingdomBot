@@ -22,7 +22,7 @@ public class Army {
         this.databaseTools = botUtils.getDatabaseTools();
         this.messageSender = botUtils.getMessageSender();
         this.userStateRepository = botUtils.getUserStateRepository();
-        this.messageEditor = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getMessageEditor();
     }
 
     /*
