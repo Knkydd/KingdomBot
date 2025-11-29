@@ -1,5 +1,6 @@
 package telegrambot.bot.logic;
 
+import lombok.Getter;
 import telegrambot.bot.BotUtils;
 import telegrambot.bot.UserStateRepository;
 import telegrambot.data.ConstantDB;
@@ -13,9 +14,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NextMove {
+    @Getter
     private Integer woodResourceUpdate = 0;
+    @Getter
     private Integer goldResourceUpdate = 0;
+    @Getter
     private Integer foodResourceUpdate = 0;
+    @Getter
     private Integer stoneResourceUpdate = 0;
     private DatabaseTools databaseTools;
     private MessageSender messageSender;
@@ -25,7 +30,7 @@ public class NextMove {
     public NextMove(BotUtils botUtils) {
         this.databaseTools = botUtils.getDatabaseTools();
         this.messageSender = botUtils.getMessageSender();
-        this.messageEditor = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getMessageEditor();
         this.userStateRepository = botUtils.getUserStateRepository();
     }
 
@@ -46,22 +51,6 @@ public class NextMove {
         this.foodResourceUpdate = food + (farmLevel * 30) + (townHallLevel * 5) - (army.get(ConstantDB.USER_WARRIOR_UNIT) * 2) - (army.get(ConstantDB.USER_MAGE_UNIT) * 4) -
                 (army.get(ConstantDB.USER_ARCHER_UNIT) * 3) - (army.get(ConstantDB.USER_PALADIN_UNIT) * 5) -
                 (army.get(ConstantDB.USER_HEALER_UNIT) * 7);
-    }
-
-    public Integer getFoodResourceUpdate() {
-        return foodResourceUpdate;
-    }
-
-    public Integer getGoldResourceUpdate() {
-        return goldResourceUpdate;
-    }
-
-    public Integer getStoneResourceUpdate() {
-        return stoneResourceUpdate;
-    }
-
-    public Integer getWoodResourceUpdate() {
-        return woodResourceUpdate;
     }
 
     public Map<String, Integer> calculatingResources(long chatID) {

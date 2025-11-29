@@ -21,7 +21,7 @@ public class MainMenu {
         databaseTools = botUtils.getDatabaseTools();
         messageSender = botUtils.getMessageSender();
         userStateRepository = botUtils.getUserStateRepository();
-        messageEditor = botUtils.getEditMessage();
+        messageEditor = botUtils.getMessageEditor();
     }
 
     public void setMainMenuInMSG(long chatID, Integer messageID) {

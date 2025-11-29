@@ -22,7 +22,7 @@ public class Builds {
         this.messageSender = botUtils.getMessageSender();
         this.databaseTools = botUtils.getDatabaseTools();
         this.userStateRepository = botUtils.getUserStateRepository();
-        this.messageEditor = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getMessageEditor();
     }
     
     public static String createBuildsMessage(Map<String, Integer> builds) {

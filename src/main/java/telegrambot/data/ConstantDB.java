@@ -3,16 +3,6 @@ package telegrambot.data;
 import java.util.Map;
 
 public class ConstantDB {
-
-    public final static String TABLE_USERS = "users";
-    public final static String TABLE_BUILDS = "builds";
-    public final static String TABLE_RESOURCES = "resources";
-    public final static String TABLE_ARMY = "army";
-
-    public final static String USER_ID = "chatID";
-    public final static String USER_NAME = "username";
-    public final static String USER_LEVEL_ATTACK = "attackLevel";
-
     public final static String USER_WOOD = "Wood";
     public final static String USER_GOLD = "Gold";
     public final static String USER_FOOD = "Food";

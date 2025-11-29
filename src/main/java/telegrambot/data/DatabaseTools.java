@@ -1,8 +1,11 @@
 package telegrambot.data;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.sql.*;
 import java.util.*;
 
+@Slf4j
 public class DatabaseTools {
     private final Connection dbConnection;
 
@@ -29,7 +32,7 @@ public class DatabaseTools {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed registration user. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
     }
     
@@ -43,7 +46,7 @@ public class DatabaseTools {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed check registration user. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
         return false;
     }
@@ -65,7 +68,7 @@ public class DatabaseTools {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed getting user resources. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
         return resources;
     }
@@ -86,7 +89,7 @@ public class DatabaseTools {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed set user resources. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
     }
 
@@ -127,7 +130,7 @@ public class DatabaseTools {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed get user army. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
         return army;
     }
@@ -141,7 +144,7 @@ public class DatabaseTools {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed set user army. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
     }
 
@@ -153,7 +156,7 @@ public class DatabaseTools {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed set user army power. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
     }
 
@@ -167,7 +170,7 @@ public class DatabaseTools {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed get user army power. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
         return -1;
     }
@@ -183,7 +186,7 @@ public class DatabaseTools {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed getting user level attack. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
         return 0;
     }
@@ -196,7 +199,7 @@ public class DatabaseTools {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed set user level attack. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
     }
 
@@ -221,7 +224,7 @@ public class DatabaseTools {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            log.error("Error! Failed getting user builds. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
         return builds;
     }
@@ -235,7 +238,7 @@ public class DatabaseTools {
 
             statement.executeUpdate();
         } catch (SQLException e){
-            e.printStackTrace();
+            log.error("Error! Failed set user builds. Exception: {}, ChatID: {}", e.getMessage(), chatID);
         }
     }
 }

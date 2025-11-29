@@ -20,7 +20,7 @@ public class GameMenu {
         this.messageSender = botUtils.getMessageSender();
         this.databaseTools = botUtils.getDatabaseTools();
         this.userStateRepository = botUtils.getUserStateRepository();
-        this.messageEditor = botUtils.getEditMessage();
+        this.messageEditor = botUtils.getMessageEditor();
     }
 
     public void gameMenuHandler(long chatID, String callbackData, Integer messageID) {
