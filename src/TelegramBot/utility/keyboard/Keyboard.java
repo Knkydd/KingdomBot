@@ -6,12 +6,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 public class Keyboard {
-    private final KeyboardBuilder keyboardBuilder;
-
-    public Keyboard() {
-        this.keyboardBuilder = new KeyboardBuilder();
-    }
-
     public SendMessage startKeyboardMessage(long chatID) {
         SendMessage message = new SendMessage();
         message.setChatId(chatID);
@@ -22,47 +16,47 @@ public class Keyboard {
     }
 
     public InlineKeyboardMarkup startKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.startButtons, 1);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.startButtons, 1);
     }
 
     public InlineKeyboardMarkup gameKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.gameButtons, 2);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.gameButtons, 2);
     }
 
     public InlineKeyboardMarkup actionKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.actionsButtons, 3);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.actionsButtons, 3);
     }
 
     public InlineKeyboardMarkup warningKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.oneBackButton, 1);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.oneBackButton, 1);
     }
 
     public InlineKeyboardMarkup leaderboardKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.oneBackButton, 1);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.oneBackButton, 1);
     }
 
     public InlineKeyboardMarkup buildsKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.buildMenuButtons, 2);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.buildMenuButtons, 2);
     }
 
     public InlineKeyboardMarkup upgradeBuildsKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.upgradeButtons, 3);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.upgradeButtons, 3);
     }
 
     public InlineKeyboardMarkup upbuildBuildsKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.upbuildButtons, 3);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.upbuildButtons, 3);
     }
 
     public InlineKeyboardMarkup armyKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.armyButtons, 2);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.armyButtons, 2);
     }
 
     public InlineKeyboardMarkup recruitingKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.recruitingButtons, 3);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.recruitingButtons, 3);
     }
 
     public InlineKeyboardMarkup attackKeyboard() {
-        return keyboardBuilder.createKeyboard(ButtonsMaps.attackButtons, 1);
+        return KeyboardBuilder.createKeyboard(ButtonsMaps.attackButtons, 1);
     }
 }
 

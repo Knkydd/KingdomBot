@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class KeyboardBuilder {
-    public InlineKeyboardMarkup createKeyboard(Map<String, String> buttonMap, int rows) {
+    public static InlineKeyboardMarkup createKeyboard(Map<String, String> buttonMap, int rows) {
         InlineKeyboardMarkup keyboard = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboardRowsList = new ArrayList<>();
         List<InlineKeyboardButton> keyboardRow = new ArrayList<>();
@@ -29,7 +29,7 @@ public class KeyboardBuilder {
         return keyboard;
     }
 
-    private InlineKeyboardButton createButton(String text, String callbackData) {
+    private static InlineKeyboardButton createButton(String text, String callbackData) {
         InlineKeyboardButton button = new InlineKeyboardButton();
         button.setText(text);
         button.setCallbackData(callbackData);
