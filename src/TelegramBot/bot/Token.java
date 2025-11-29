@@ -5,11 +5,8 @@ import java.util.Scanner;
 
 public class Token {
     public static String readToken() {
-        try {
-            Scanner scan = new Scanner(new File("./Token.txt"));
-            String line = scan.nextLine();
-            scan.close();
-            return line;
+        try (Scanner scan = new Scanner(new File("./Token.txt"))) {
+            return scan.nextLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
