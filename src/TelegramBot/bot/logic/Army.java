@@ -46,8 +46,7 @@ public class Army {
         return warriorPower + magePower + archerPower + paladinPower + healerPower;
     }
 
-    //Сообщение в меню армии(показывает кто есть)
-    public static String armyMessage(Map<String, Integer> army, Integer armyPower) {
+    public static String createArmyMessage(Map<String, Integer> army, Integer armyPower) {
         StringBuilder message = new StringBuilder(
                 ConstantMessages.ARMY_MESSAGE).append('\n');
 
@@ -67,14 +66,12 @@ public class Army {
                 .toString();
     }
 
-    //Рекрутинг войск
     private Map<String, Integer> recruitingArmy(Map<String, Integer> army, String unit) {
         army.put(unit, army.get(unit) + 1);
         return army;
     }
 
-    //Сообщение меню рекрутинга войск
-    private String recruitingMessage(Map<String, Integer> army, Integer Gold) {
+    private String createRecruitingMessage(Map<String, Integer> army, Integer Gold) {
         StringBuilder message = new StringBuilder(
                 ConstantMessages.QUESTION_ABOUT_RECRUITING).append('\n');
 
@@ -95,11 +92,10 @@ public class Army {
     public void armyRecruitingHandler(long chatID, String callbackData, Integer messageID) {
 
         userStateRepository.setState(chatID, ConstantKB.CALLBACK_RECRUITING_BUTTON);
-        messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, recruitingMessage(databaseTools.getArmy(chatID), databaseTools.getResources(chatID).get(ConstantDB.USER_GOLD))));
+        messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, createRecruitingMessage(databaseTools.getArmy(chatID), databaseTools.getResources(chatID).get(ConstantDB.USER_GOLD))));
 
     }
 
-    //Проверка наличия здания, к которому привязан воин
     private boolean checkRecruitingArmyOnBuilds(Map<String, Integer> builds, String unit) {
         if (unit.equals(ConstantDB.USER_WARRIOR_UNIT)) {
             if (builds.get(ConstantDB.USER_BARRACKS).equals(0)) {

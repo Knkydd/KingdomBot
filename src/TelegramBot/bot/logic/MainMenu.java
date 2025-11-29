@@ -52,7 +52,7 @@ public class MainMenu {
 
             case ConstantKB.CALLBACK_PLAY_BUTTON:
 
-                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, ConstantMessages.GAME_MESSAGE + Resources.resourceMessage(databaseTools.getResources(chatID))));
+                messageSender.send(chatID, editMessage.messageEdit(chatID, messageID, callbackData, ConstantMessages.GAME_MESSAGE + Resources.createResourceMessage(databaseTools.getResources(chatID))));
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_PLAY_BUTTON);
 
                 break;

@@ -4,7 +4,7 @@ import TelegramBot.utility.keyboard.*;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 
 public class EditMessage {
-    private Keyboard keyboard;
+    private final Keyboard keyboard;
 
     public EditMessage() {
         this.keyboard = new Keyboard();

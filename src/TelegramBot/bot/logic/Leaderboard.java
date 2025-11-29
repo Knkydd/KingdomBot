@@ -3,17 +3,20 @@ package TelegramBot.bot.logic;
 import java.util.*;
 
 public class Leaderboard {
-    public static String leaderboardMessage(Map<String, Integer> leaderboard) {
-        String message = "Таблица лидеров по мощи армии:\n";
-        Set<String> sortedLeaderboardKeys = leaderboard.keySet();
-        Iterator<String> leaderboardIterator = sortedLeaderboardKeys.iterator();
-        int i = 1;
-        while (leaderboardIterator.hasNext()) {
-            String next = leaderboardIterator.next();
-            String m = i + "     "+ next + "       " + leaderboard.get(next) + "\n";
-            message = message + m;
-            i++;
+    public static String createLeaderboardMessage(Map<String, Integer> leaderboard) {
+        StringBuilder message = new StringBuilder("Таблица лидеров по мощи армии:\n");
+        int counter = 0;
+        for(var entry : leaderboard.entrySet()){
+            message.append(counter)
+                    .append("     ")
+                    .append(entry.getKey())
+                    .append("     ")
+                    .append(entry.getValue())
+                    .append("\n");
+            counter+=1;
+            if(counter == 10)
+                break;
         }
-        return message;
+        return message.toString();
     }
 }

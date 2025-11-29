@@ -23,9 +23,8 @@ public class Builds {
         this.userStateRepository = botUtils.getUserStateRepository();
         this.editMessage = botUtils.getEditMessage();
     }
-
-    //Сообщение меню зданий
-    public static String buildsMessage(Map<String, Integer> builds) {
+    
+    public static String createBuildsMessage(Map<String, Integer> builds) {
         StringBuilder message = new StringBuilder(ConstantMessages.BUILDS_MESSAGE);
 
         for (Map.Entry<String, Integer> entry : builds.entrySet()) {
@@ -39,9 +38,8 @@ public class Builds {
 
         return message.toString();
     }
-
-    //Сообщение об улучшениях зданий
-    private String upgradeBuildsMessage(Map<String, Integer> resources, Map<String, Integer> builds) {
+    
+    private String createUpgradeBuildsMessage(Map<String, Integer> resources, Map<String, Integer> builds) {
         StringBuilder message = new StringBuilder(ConstantMessages.BUILDS_MESSAGE_UPGRADE);
         int counter = 1;
 
@@ -72,11 +70,10 @@ public class Builds {
             }
         }
 
-        message.append(Resources.resourceMessage(resources));
+        message.append(Resources.createResourceMessage(resources));
         return message.toString();
     }
-
-    //Проверка, можно ли улучшать здание(проверка на превышение уровня)
+    
     private boolean checkUpgradeBuilds(Map<String, Integer> builds, String build) {
         if (builds.get(build) >= ConstantResourcesForBuilds.LIST_LIMITS.get(build)) {
             return false;
@@ -92,8 +89,7 @@ public class Builds {
         return true;
     }
 
-    //Сообщение меню постройки зданий
-    private String upbuildBuildsMessage(Map<String, Integer> resources, Map<String, Integer> builds) {
+    private String createConstructBuildsMessage(Map<String, Integer> resources, Map<String, Integer> builds) {
         StringBuilder message = new StringBuilder(ConstantMessages.BUILDS_MESSAGE_UPBUILD);
         int counter = 1;
 
@@ -118,12 +114,12 @@ public class Builds {
             }
         }
 
-        message.append(Resources.resourceMessage(resources));
+        message.append(Resources.createResourceMessage(resources));
         return message.toString();
     }
 
     //Проверка, можно ли строить здание(проверка на то, построено или нет)
-    private boolean checkUpbuildBuilds(Map<String, Integer> builds, String build) {
+    private boolean checkConstructBuilds(Map<String, Integer> builds, String build) {
         if (!builds.get(build).equals(0)) {
             return false;
         }
@@ -138,26 +134,26 @@ public class Builds {
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_UPBUILD_BUILD_BUTTON);
                 messageSender.send(
                         chatID, editMessage.messageEdit(
-                                chatID, messageID, callbackData, upbuildBuildsMessage(resources, builds)));
+                                chatID, messageID, callbackData, createConstructBuildsMessage(resources, builds)));
                 break;
 
             case ConstantKB.CALLBACK_UPGRADE_BUILD_BUTTON:
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_UPGRADE_BUILD_BUTTON);
                 messageSender.send(
                         chatID, editMessage.messageEdit(
-                                chatID, messageID, callbackData, upgradeBuildsMessage(resources, builds)));
+                                chatID, messageID, callbackData, createUpgradeBuildsMessage(resources, builds)));
                 break;
         }
     }
 
-    public void buildsHandlerUpbuild(long chatID, String callbackData, Integer messageID) {
+    public void buildsHandlerConstruct(long chatID, String callbackData, Integer messageID) {
         userStateRepository.setState(chatID, ConstantKB.CALLBACK_UPBUILD_BUILD_BUTTON);
         callbackData = callbackData.substring(0, callbackData.length() - 7);
 
         Map<String, Integer> builds = databaseTools.getBuilds(chatID);
         Map<String, Integer> resources = databaseTools.getResources(chatID);
 
-        if (checkUpbuildBuilds(builds, callbackData)) {
+        if (checkConstructBuilds(builds, callbackData)) {
 
             if (Resources.checkResourcesOnSpending(
                     resources, ConstantResourcesForBuilds.RESOURCES_FOR_BUILD.get(callbackData))) {

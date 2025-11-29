@@ -20,8 +20,7 @@ public class AttackMenu {
         this.userStateRepository = botUtils.getUserStateRepository();
     }
 
-    //Сообщение меню атаки
-    private String attackMessage(Integer armyPower, Integer currentLevel) {
+    private String createAttackMessage(Integer armyPower, Integer currentLevel) {
         if (currentLevel == 11) {
             return ConstantMessages.FINAL_BATTLE_MESSAGE;
         }
@@ -36,8 +35,7 @@ public class AttackMenu {
                 .toString();
     }
 
-    //Сообщение меню награды
-    private String rewardsMessage(Integer currentLevel) {
+    private String createRewardsMessage(Integer currentLevel) {
         Map<String, Integer> rewards = ConstantReward.REWARD_FOR_VICTORY_ATTACK.get(currentLevel);
 
         return new StringBuilder()
@@ -60,7 +58,7 @@ public class AttackMenu {
                 userStateRepository.setState(chatID, ConstantKB.CALLBACK_ATTACK_BUTTON);
                 messageSender.send(chatID, editMessage.messageEdit(
                         chatID, messageID, ConstantKB.CALLBACK_ATTACK_BUTTON,
-                        attackMessage(armyPower, currentLevel)));
+                        createAttackMessage(armyPower, currentLevel)));
 
                 break;
             case ConstantKB.CALLBACK_ATTACK_ENEMY_BUTTON:
@@ -72,7 +70,7 @@ public class AttackMenu {
                                     currentLevel), 1));
                     messageSender.send(chatID, editMessage.warningMessage(
                             chatID, messageID,
-                            ConstantMessages.ATTACK_ENEMY_SUCCESSFUL + rewardsMessage(currentLevel)));
+                            ConstantMessages.ATTACK_ENEMY_SUCCESSFUL + createRewardsMessage(currentLevel)));
                     databaseTools.setLevelAttack(chatID, currentLevel + 1);
 
                 } else {

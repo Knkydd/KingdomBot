@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class Resources {
-    public static String resourceMessage(Map<String, Integer> resources) {
+    public static String createResourceMessage(Map<String, Integer> resources) {
         return "Ресурсы, которые у вас есть: " +
                 "\nЕда: " + resources.get("Food") + "\n" +
                 "Дерево: " + resources.get("Wood") + "\n" +

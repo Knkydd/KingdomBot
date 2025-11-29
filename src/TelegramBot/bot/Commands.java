@@ -87,17 +87,17 @@ public class Commands {
 
         //Обработка постройки зданий
         commandsMap.put(ConstantBuildUp.QUARRY_UPBUILD, (chatID, messageID) ->
-                buildsMenuControl.buildsHandlerUpbuild(chatID, ConstantBuildUp.QUARRY_UPBUILD, messageID));
+                buildsMenuControl.buildsHandlerConstruct(chatID, ConstantBuildUp.QUARRY_UPBUILD, messageID));
         commandsMap.put(ConstantBuildUp.TRADE_BUILD_UPBUILD, (chatID, messageID) ->
-                buildsMenuControl.buildsHandlerUpbuild(chatID, ConstantBuildUp.TRADE_BUILD_UPGRADE, messageID));
+                buildsMenuControl.buildsHandlerConstruct(chatID, ConstantBuildUp.TRADE_BUILD_UPGRADE, messageID));
         commandsMap.put(ConstantBuildUp.MAGE_TOWER_UPBUILD, (chatID, messageID) ->
-                buildsMenuControl.buildsHandlerUpbuild(chatID, ConstantBuildUp.MAGE_TOWER_UPBUILD, messageID));
+                buildsMenuControl.buildsHandlerConstruct(chatID, ConstantBuildUp.MAGE_TOWER_UPBUILD, messageID));
         commandsMap.put(ConstantBuildUp.SHOOTING_RANGE_UPBUILD, (chatID, messageID) ->
-                buildsMenuControl.buildsHandlerUpbuild(chatID, ConstantBuildUp.SHOOTING_RANGE_UPBUILD, messageID));
+                buildsMenuControl.buildsHandlerConstruct(chatID, ConstantBuildUp.SHOOTING_RANGE_UPBUILD, messageID));
         commandsMap.put(ConstantBuildUp.CHAPEL_OF_LAST_HOPE_UPBUILD, (chatID, messageID) ->
-                buildsMenuControl.buildsHandlerUpbuild(chatID, ConstantBuildUp.CHAPEL_OF_LAST_HOPE_UPBUILD, messageID));
+                buildsMenuControl.buildsHandlerConstruct(chatID, ConstantBuildUp.CHAPEL_OF_LAST_HOPE_UPBUILD, messageID));
         commandsMap.put(ConstantBuildUp.CHURCH_UPBUILD, (chatID, messageID) ->
-                buildsMenuControl.buildsHandlerUpbuild(chatID, ConstantBuildUp.CHURCH_UPBUILD, messageID));
+                buildsMenuControl.buildsHandlerConstruct(chatID, ConstantBuildUp.CHURCH_UPBUILD, messageID));
 
         //Обработка улучшения зданий
         commandsMap.put(ConstantBuildUp.TOWN_HALL_UPGRADE, (chatID, messageID) ->

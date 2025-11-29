@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class UserStateRepository {
-    private final static Map<Long, List<String>> userStates = new ConcurrentHashMap<>();
+    private final static Map<Long, List<String>> userStates = new HashMap<>();
 
     public boolean isEmpty(){
         if(userStates.isEmpty())
@@ -17,11 +17,7 @@ public class UserStateRepository {
     }
 
     public void setState(long chatID, String newState) {
-        if (userStates.get(chatID) == null) {
-            userStates.computeIfAbsent(chatID, k -> new ArrayList<>()).add(newState);
-        } else {
-            userStates.get(chatID).add(newState);
-        }
+        userStates.computeIfAbsent(chatID, k -> new ArrayList<>()).add(newState);
     }
 
     public void gt(){

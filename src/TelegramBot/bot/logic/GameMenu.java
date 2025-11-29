@@ -37,7 +37,7 @@ public class GameMenu {
                         chatID, ConstantKB.CALLBACK_BUILDS_BUTTON);
                 messageSender.send(
                         chatID, editMessage.messageEdit(
-                                chatID, messageID, callbackData, Builds.buildsMessage(builds)));
+                                chatID, messageID, callbackData, Builds.createBuildsMessage(builds)));
                 break;
             case ConstantKB.CALLBACK_ARMY_BUTTON:
                 Map<String, Integer> army = databaseTools.getArmy(chatID);
@@ -46,7 +46,7 @@ public class GameMenu {
                         chatID, ConstantKB.CALLBACK_ARMY_BUTTON);
                 messageSender.send(
                         chatID, editMessage.messageEdit(
-                                chatID, messageID, callbackData, Army.armyMessage(army, armyPower)));
+                                chatID, messageID, callbackData, Army.createArmyMessage(army, armyPower)));
                 break;
         }
     }
