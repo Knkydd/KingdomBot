@@ -1,7 +1,6 @@
-package TelegramBot.bot.logic;
+package TelegramBot.bot;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class UserStateRepository {
     private final static Map<Long, List<String>> userStates = new HashMap<>();

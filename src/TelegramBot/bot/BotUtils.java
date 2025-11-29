@@ -1,11 +1,9 @@
 package TelegramBot.bot;
 
-import TelegramBot.bot.logic.UserStateRepository;
 import TelegramBot.data.DatabaseConnection;
 import TelegramBot.data.DatabaseTools;
 import TelegramBot.utility.EditMessage;
 import TelegramBot.utility.MessageSender;
-import TelegramBot.utility.keyboard.Keyboard;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 
 public class BotUtils {
