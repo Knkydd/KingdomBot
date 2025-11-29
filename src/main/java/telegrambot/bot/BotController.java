@@ -1,11 +1,13 @@
 package telegrambot.bot;
 
+import lombok.extern.slf4j.Slf4j;
 import telegrambot.utility.keyboard.ConstantKB;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.function.BiConsumer;
 
+@Slf4j
 public class BotController {
     private final UserStateRepository userStateRepository;
     private final Commands commands;
@@ -14,6 +16,7 @@ public class BotController {
         BotUtils botUtils = BotUtils.getInstance(bot);
         userStateRepository = botUtils.getUserStateRepository();
         commands = botUtils.getCommands();
+        log.info("BotController created successful");
     }
 
     public void updateReceived(Update update) {
@@ -53,7 +56,7 @@ public class BotController {
             BiConsumer<Long, Integer> command = commands.getCommand(callbackData);
             command.accept(chatID, messageID);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Error in handleCallbackData. Exception: {}, CallbackData: {}", e.getMessage(), callbackData);
         }
     }
 }
