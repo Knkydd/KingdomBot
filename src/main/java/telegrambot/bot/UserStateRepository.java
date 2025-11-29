@@ -10,7 +10,7 @@ public class UserStateRepository {
     }
 
     public void removeAll(long chatID){
-        userStates.get(chatID).clear();
+        userStates.remove(chatID);
     }
 
     public void setState(long chatID, String newState) {
@@ -20,7 +20,7 @@ public class UserStateRepository {
     public String getState(long chatID){
         List<String> states = userStates.get(chatID);
         String result = "";
-        if(states.isEmpty()){
+        if(states == null || states.isEmpty()){
             result = "mainMenu";
         } else {
             states.remove(states.size()-1);
