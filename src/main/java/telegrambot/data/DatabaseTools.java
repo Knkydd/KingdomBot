@@ -89,7 +89,7 @@ public class DatabaseTools {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            log.error("Error! Failed set user resources. Exception: {}, ChatID: {}", e.getMessage(), chatID);
+            log.error("Error! Failed set user resources. Exception: {}, ChatID: {}, Resources: {}", e.getMessage(), chatID, resources);
         }
     }
 

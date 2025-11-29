@@ -29,15 +29,17 @@ public class MainMenu {
         userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
     }
 
-    public void mainMenuStart(long chatID){
-        if(!databaseTools.isUserRegistered(chatID)){
+    public void mainMenuStart(long chatID) {
+        if (!databaseTools.isUserRegistered(chatID)) {
             databaseTools.registrationUser(chatID);
         }
         if (userStateRepository.isEmpty()) {
             userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
         } else {
-            userStateRepository.removeAll(chatID);
-            userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
+            if (userStateRepository.getState(chatID) != null) {
+                userStateRepository.removeAll(chatID);
+                userStateRepository.setState(chatID, ConstantKB.MAIN_MENU);
+            }
         }
         botUtils.getMessageSender().send(chatID, Keyboard.startKeyboardMessage(chatID));
     }
